@@ -146,7 +146,7 @@ final class Cognito:MarcaClass,Singleton {
         var password = p
         if (autoLogin){
             authUsername="john@everphase.net"
-            password="zipd00d@@"
+            password="m@rc@1"
         }
         return await signIn(authUsername:authUsername, password:password)
     }

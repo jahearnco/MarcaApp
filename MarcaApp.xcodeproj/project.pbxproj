@@ -10,19 +10,12 @@
 		078523DB29767CE4003FDB12 /* Cognito.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078523C229767CDE003FDB12 /* Cognito.swift */; };
 		078523DC29767CE4003FDB12 /* FlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078523C329767CDE003FDB12 /* FlowController.swift */; };
 		078523DD29767CE4003FDB12 /* ContentViewParent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078523C429767CDF003FDB12 /* ContentViewParent.swift */; };
-		078523DE29767CE4003FDB12 /* LogsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078523C729767CDF003FDB12 /* LogsView.swift */; };
-		078523DF29767CE4003FDB12 /* TaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078523C829767CDF003FDB12 /* TaskView.swift */; };
-		078523E029767CE4003FDB12 /* CheckboxFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078523CA29767CDF003FDB12 /* CheckboxFieldView.swift */; };
-		078523E129767CE4003FDB12 /* TextCreateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078523CB29767CDF003FDB12 /* TextCreateView.swift */; };
-		078523E229767CE4003FDB12 /* TextCreateFields.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078523CC29767CDF003FDB12 /* TextCreateFields.swift */; };
-		078523E329767CE4003FDB12 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078523CD29767CDF003FDB12 /* ContentView.swift */; };
 		078523E429767CE5003FDB12 /* MarcaClassFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078523CF29767CE1003FDB12 /* MarcaClassFactory.swift */; };
 		078523E529767CE5003FDB12 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078523D029767CE2003FDB12 /* Constants.swift */; };
 		078523E629767CE5003FDB12 /* MarcaError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078523D229767CE2003FDB12 /* MarcaError.swift */; };
 		078523E729767CE5003FDB12 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078523D429767CE3003FDB12 /* LoginView.swift */; };
 		078523E929767CE5003FDB12 /* DataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078523D729767CE4003FDB12 /* DataModel.swift */; };
 		078523EA29767CE5003FDB12 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078523D829767CE4003FDB12 /* AppDelegate.swift */; };
-		078523EB29767CE5003FDB12 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 078523DA29767CE4003FDB12 /* Preview Assets.xcassets */; };
 		078523F229767D90003FDB12 /* AWSAPIPlugin in Frameworks */ = {isa = PBXBuildFile; productRef = 078523F129767D90003FDB12 /* AWSAPIPlugin */; };
 		078523F429767D90003FDB12 /* AWSCognitoAuthPlugin in Frameworks */ = {isa = PBXBuildFile; productRef = 078523F329767D90003FDB12 /* AWSCognitoAuthPlugin */; };
 		078523F629767D90003FDB12 /* AWSDataStorePlugin in Frameworks */ = {isa = PBXBuildFile; productRef = 078523F529767D90003FDB12 /* AWSDataStorePlugin */; };
@@ -33,8 +26,13 @@
 		0785240029767D90003FDB12 /* Amplify in Frameworks */ = {isa = PBXBuildFile; productRef = 078523FF29767D90003FDB12 /* Amplify */; };
 		0785240329767FA3003FDB12 /* awsconfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = 0785240129767FA2003FDB12 /* awsconfiguration.json */; };
 		0785240429767FA3003FDB12 /* amplifyconfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = 0785240229767FA3003FDB12 /* amplifyconfiguration.json */; };
+		0785240C297909FE003FDB12 /* TextCreateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07852409297909FE003FDB12 /* TextCreateView.swift */; };
+		0785240D297909FE003FDB12 /* TextCreateFields.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0785240A297909FE003FDB12 /* TextCreateFields.swift */; };
+		0785240E297909FE003FDB12 /* CheckboxFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0785240B297909FE003FDB12 /* CheckboxFieldView.swift */; };
+		0785241029790A14003FDB12 /* LogsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0785240F29790A14003FDB12 /* LogsView.swift */; };
+		0785241229790A23003FDB12 /* TaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0785241129790A23003FDB12 /* TaskView.swift */; };
+		0785241429790AEF003FDB12 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0785241329790AEF003FDB12 /* ContentView.swift */; };
 		07E3A3672975D0AA00D53F12 /* MarcaAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E3A3662975D0AA00D53F12 /* MarcaAppApp.swift */; };
-		07E3A3692975D0AA00D53F12 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E3A3682975D0AA00D53F12 /* ContentView.swift */; };
 		07E3A36B2975D0B400D53F12 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 07E3A36A2975D0B400D53F12 /* Assets.xcassets */; };
 		07E3A36E2975D0B400D53F12 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 07E3A36D2975D0B400D53F12 /* Preview Assets.xcassets */; };
 /* End PBXBuildFile section */
@@ -43,12 +41,6 @@
 		078523C229767CDE003FDB12 /* Cognito.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cognito.swift; sourceTree = "<group>"; };
 		078523C329767CDE003FDB12 /* FlowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlowController.swift; sourceTree = "<group>"; };
 		078523C429767CDF003FDB12 /* ContentViewParent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentViewParent.swift; sourceTree = "<group>"; };
-		078523C729767CDF003FDB12 /* LogsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogsView.swift; sourceTree = "<group>"; };
-		078523C829767CDF003FDB12 /* TaskView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskView.swift; sourceTree = "<group>"; };
-		078523CA29767CDF003FDB12 /* CheckboxFieldView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckboxFieldView.swift; sourceTree = "<group>"; };
-		078523CB29767CDF003FDB12 /* TextCreateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextCreateView.swift; sourceTree = "<group>"; };
-		078523CC29767CDF003FDB12 /* TextCreateFields.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextCreateFields.swift; sourceTree = "<group>"; };
-		078523CD29767CDF003FDB12 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ContentView.swift; path = ../../MarcaApp0105/MarcaApp0105/ContentView.swift; sourceTree = "<group>"; };
 		078523CF29767CE1003FDB12 /* MarcaClassFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarcaClassFactory.swift; sourceTree = "<group>"; };
 		078523D029767CE2003FDB12 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		078523D229767CE2003FDB12 /* MarcaError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarcaError.swift; sourceTree = "<group>"; };
@@ -58,9 +50,14 @@
 		078523DA29767CE4003FDB12 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		0785240129767FA2003FDB12 /* awsconfiguration.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = awsconfiguration.json; sourceTree = "<group>"; };
 		0785240229767FA3003FDB12 /* amplifyconfiguration.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = amplifyconfiguration.json; sourceTree = "<group>"; };
+		07852409297909FE003FDB12 /* TextCreateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextCreateView.swift; sourceTree = "<group>"; };
+		0785240A297909FE003FDB12 /* TextCreateFields.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextCreateFields.swift; sourceTree = "<group>"; };
+		0785240B297909FE003FDB12 /* CheckboxFieldView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckboxFieldView.swift; sourceTree = "<group>"; };
+		0785240F29790A14003FDB12 /* LogsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogsView.swift; sourceTree = "<group>"; };
+		0785241129790A23003FDB12 /* TaskView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskView.swift; sourceTree = "<group>"; };
+		0785241329790AEF003FDB12 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		07E3A3632975D0AA00D53F12 /* MarcaApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MarcaApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		07E3A3662975D0AA00D53F12 /* MarcaAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarcaAppApp.swift; sourceTree = "<group>"; };
-		07E3A3682975D0AA00D53F12 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		07E3A36A2975D0B400D53F12 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		07E3A36D2975D0B400D53F12 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -91,35 +88,6 @@
 				078523C329767CDE003FDB12 /* FlowController.swift */,
 			);
 			path = Controllers;
-			sourceTree = "<group>";
-		};
-		078523C529767CDF003FDB12 /* TaskViews */ = {
-			isa = PBXGroup;
-			children = (
-				078523C629767CDF003FDB12 /* ViewLogs */,
-				078523C829767CDF003FDB12 /* TaskView.swift */,
-				078523C929767CDF003FDB12 /* CreateLogs */,
-			);
-			name = TaskViews;
-			path = ../../MarcaApp0105/MarcaApp0105/TaskViews;
-			sourceTree = "<group>";
-		};
-		078523C629767CDF003FDB12 /* ViewLogs */ = {
-			isa = PBXGroup;
-			children = (
-				078523C729767CDF003FDB12 /* LogsView.swift */,
-			);
-			path = ViewLogs;
-			sourceTree = "<group>";
-		};
-		078523C929767CDF003FDB12 /* CreateLogs */ = {
-			isa = PBXGroup;
-			children = (
-				078523CA29767CDF003FDB12 /* CheckboxFieldView.swift */,
-				078523CB29767CDF003FDB12 /* TextCreateView.swift */,
-				078523CC29767CDF003FDB12 /* TextCreateFields.swift */,
-			);
-			path = CreateLogs;
 			sourceTree = "<group>";
 		};
 		078523CE29767CE1003FDB12 /* Factories */ = {
@@ -163,6 +131,34 @@
 			path = "../../MarcaApp0105/MarcaApp0105/Preview Content";
 			sourceTree = "<group>";
 		};
+		07852406297908E7003FDB12 /* TaskViews */ = {
+			isa = PBXGroup;
+			children = (
+				0785241129790A23003FDB12 /* TaskView.swift */,
+				078524082979094A003FDB12 /* CreateLogs */,
+				0785240729790940003FDB12 /* ViewLogs */,
+			);
+			path = TaskViews;
+			sourceTree = "<group>";
+		};
+		0785240729790940003FDB12 /* ViewLogs */ = {
+			isa = PBXGroup;
+			children = (
+				0785240F29790A14003FDB12 /* LogsView.swift */,
+			);
+			path = ViewLogs;
+			sourceTree = "<group>";
+		};
+		078524082979094A003FDB12 /* CreateLogs */ = {
+			isa = PBXGroup;
+			children = (
+				0785240B297909FE003FDB12 /* CheckboxFieldView.swift */,
+				0785240A297909FE003FDB12 /* TextCreateFields.swift */,
+				07852409297909FE003FDB12 /* TextCreateView.swift */,
+			);
+			path = CreateLogs;
+			sourceTree = "<group>";
+		};
 		07E3A35A2975D0A900D53F12 = {
 			isa = PBXGroup;
 			children = (
@@ -186,17 +182,16 @@
 			children = (
 				078523D829767CE4003FDB12 /* AppDelegate.swift */,
 				078523D029767CE2003FDB12 /* Constants.swift */,
-				078523CD29767CDF003FDB12 /* ContentView.swift */,
+				0785241329790AEF003FDB12 /* ContentView.swift */,
 				078523C429767CDF003FDB12 /* ContentViewParent.swift */,
 				078523C129767CDE003FDB12 /* Controllers */,
 				078523D129767CE2003FDB12 /* Errors */,
 				078523CE29767CE1003FDB12 /* Factories */,
 				078523D329767CE3003FDB12 /* Login */,
 				078523D629767CE4003FDB12 /* Models */,
+				07852406297908E7003FDB12 /* TaskViews */,
 				078523D929767CE4003FDB12 /* Preview Content */,
-				078523C529767CDF003FDB12 /* TaskViews */,
 				07E3A3662975D0AA00D53F12 /* MarcaAppApp.swift */,
-				07E3A3682975D0AA00D53F12 /* ContentView.swift */,
 				07E3A36A2975D0B400D53F12 /* Assets.xcassets */,
 				07E3A36C2975D0B400D53F12 /* Preview Content */,
 			);
@@ -301,7 +296,6 @@
 				0785240329767FA3003FDB12 /* awsconfiguration.json in Resources */,
 				07E3A36E2975D0B400D53F12 /* Preview Assets.xcassets in Resources */,
 				0785240429767FA3003FDB12 /* amplifyconfiguration.json in Resources */,
-				078523EB29767CE5003FDB12 /* Preview Assets.xcassets in Resources */,
 				07E3A36B2975D0B400D53F12 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -313,18 +307,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0785240C297909FE003FDB12 /* TextCreateView.swift in Sources */,
 				078523E429767CE5003FDB12 /* MarcaClassFactory.swift in Sources */,
-				078523E029767CE4003FDB12 /* CheckboxFieldView.swift in Sources */,
-				078523E329767CE4003FDB12 /* ContentView.swift in Sources */,
+				0785241429790AEF003FDB12 /* ContentView.swift in Sources */,
 				078523E729767CE5003FDB12 /* LoginView.swift in Sources */,
-				07E3A3692975D0AA00D53F12 /* ContentView.swift in Sources */,
-				078523DF29767CE4003FDB12 /* TaskView.swift in Sources */,
-				078523E229767CE4003FDB12 /* TextCreateFields.swift in Sources */,
-				078523E129767CE4003FDB12 /* TextCreateView.swift in Sources */,
 				078523E529767CE5003FDB12 /* Constants.swift in Sources */,
-				078523DE29767CE4003FDB12 /* LogsView.swift in Sources */,
 				078523DB29767CE4003FDB12 /* Cognito.swift in Sources */,
+				0785240D297909FE003FDB12 /* TextCreateFields.swift in Sources */,
 				078523DD29767CE4003FDB12 /* ContentViewParent.swift in Sources */,
+				0785241029790A14003FDB12 /* LogsView.swift in Sources */,
+				0785241229790A23003FDB12 /* TaskView.swift in Sources */,
+				0785240E297909FE003FDB12 /* CheckboxFieldView.swift in Sources */,
 				078523EA29767CE5003FDB12 /* AppDelegate.swift in Sources */,
 				078523E629767CE5003FDB12 /* MarcaError.swift in Sources */,
 				078523E929767CE5003FDB12 /* DataModel.swift in Sources */,

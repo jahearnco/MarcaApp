@@ -11,7 +11,7 @@ struct MarcaClassFactory{
 
     public static func getInstance<T:MarcaClass>(className:String, kType:T.Type, instanceLabel:String="")->MarcaClass!{
         var maybeNewInstance:MarcaClass?
-        let Klass = NSClassFromString("MarcaApp0105.\(className)") as? T.Type
+        let Klass = NSClassFromString("MarcaApp.\(className)") as? T.Type
         do{
             if let K = Klass {
                 if let S = K as? Singleton.Type, let si = S.getStaticInstance(){

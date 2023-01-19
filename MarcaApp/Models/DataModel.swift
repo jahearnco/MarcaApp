@@ -33,54 +33,54 @@ final class DataModel:MarcaClass,ObservableSingleton {
 
     @Published var loggedIn:Bool = false
     @MainActor
-    public static func setIsUserLoggedIn(loggedIn:Bool, isMainThread:Bool){
+    public static func setIsUserLoggedIn(loggedIn:Bool){
         DM().loggedIn = loggedIn
     }
      
     @Published var loggedInUsername:String?
     @MainActor
-    public static func setLoggedInUsername(loggedInUsername:String?, isMainThread:Bool){
+    public static func setLoggedInUsername(loggedInUsername:String?){
         DM().loggedInUsername = loggedInUsername
     }
      
     @Published var user:User?
     @MainActor
-    public static func setUser(user:User?, isMainThread:Bool){
+    public static func setUser(user:User?){
         DM().user = user
     }
     
     @Published var logs:[[String:String]] = [["":""]]
     @MainActor
-    public static func updateLogData(logs:[[String:String]], isMainThread:Bool){
+    public static func updateLogData(logs:[[String:String]]){
         DM().logs = logs
     }
 
     @Published var cellPhoneDict:[String:String]?
     @MainActor
-    public static func updateCellPhoneList(cellPhoneDict:[String:String]?, isMainThread:Bool){
+    public static func updateCellPhoneList(cellPhoneDict:[String:String]?){
         DM().cellPhoneDict = cellPhoneDict
     }
 
     @Published var textGroupEmployees:[[String:String]] = [["":""]]
     @MainActor
-    public static func updateTextGroupEmps(textGroupEmployees:[[String:String]], isMainThread:Bool){
+    public static func updateTextGroupEmps(textGroupEmployees:[[String:String]]){
         DM().textGroupEmployees = textGroupEmployees
     }
     
     @Published var dismissCatViewLinks:Bool = false
-    public static func setDismissCatViewLinks(dismissCatViewLinks:Bool, isMainThread:Bool){
+    public static func setDismissCatViewLinks(dismissCatViewLinks:Bool){
         DM().dismissCatViewLinks = dismissCatViewLinks
     }
 
     @Published var showLogListTask:Bool = false
     @MainActor
-    public static func setShowLogListTask(showLogListTask:Bool, isMainThread:Bool){
+    public static func setShowLogListTask(showLogListTask:Bool){
         DM().showLogListTask = showLogListTask
     }
 
     @Published var showTextCreateTask:Bool = false
     @MainActor
-    public static func setShowTextCreateTask(showTextCreateTask:Bool, isMainThread:Bool){
+    public static func setShowTextCreateTask(showTextCreateTask:Bool){
         DM().showTextCreateTask = showTextCreateTask
     }
 

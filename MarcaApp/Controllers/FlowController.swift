@@ -43,14 +43,14 @@ struct FlowController{
     /** LoginViewFlow */
     public static func handleIfUserLoggedIn(loggedInUser:AuthUser?)async{
         let isLoggedIn = loggedInUser != nil
-        await DataModel.setIsUserLoggedIn(loggedIn:isLoggedIn, isMainThread:false)//updates on main thread asap
+        async let _ = await DataModel.setIsUserLoggedIn(loggedIn:isLoggedIn)//updates on main thread asap
         if isLoggedIn {
-            await previewLogsUpdateView(isMainThread:true)//updates on main thread asap - change view before Logs update
+            async let _ = await previewLogsUpdateView()//updates on main thread asap - change view before Logs update
         }
 
         let user:User = await Cognito.getUser(loggedInUser:loggedInUser)
-        await DataModel.setLoggedInUsername(loggedInUsername:user.userFirstNameLastI, isMainThread:false)//updates on main thread asap
-        await DataModel.setUser(user:user, isMainThread:false)//updates on main thread asap
+        async let _ = await DataModel.setLoggedInUsername(loggedInUsername:user.userFirstNameLastI)//updates on main thread asap
+        async let _ = await DataModel.setUser(user:user)//updates on main thread asap
         
         if isLoggedIn {
             await getLogs(user:user)//loading in background
@@ -78,13 +78,13 @@ struct FlowController{
     
     public static func handleLogoutButtonAction()async->Bool{
         let logoutSuccess = await Cognito.authSignOut()
-        await DataModel.setIsUserLoggedIn(loggedIn:!logoutSuccess, isMainThread:false)
+        await DataModel.setIsUserLoggedIn(loggedIn:!logoutSuccess)
         return logoutSuccess
     }
     
     public static func handleTextCreated(success:Bool) async{
         if(success){
-            await previewLogsUpdateView(isMainThread: false) //change view before Logs update
+            await previewLogsUpdateView() //change view before Logs update
             await getLogs(user:dataModel.user)
         }
     }
@@ -205,19 +205,19 @@ struct FlowController{
         //return catArr
     }
     
-    private static func previewLogsUpdateView(isMainThread:Bool)async{
-        await DataModel.setShowLogListTask(showLogListTask:true, isMainThread:isMainThread)
-        await DataModel.setShowTextCreateTask(showTextCreateTask:false, isMainThread:isMainThread)
+    private static func previewLogsUpdateView()async{
+        await DataModel.setShowLogListTask(showLogListTask:true)
+        await DataModel.setShowTextCreateTask(showTextCreateTask:false)
     }
     
-    public static func showTextCreateTask(isMainThread:Bool)async{
-        await DataModel.setShowLogListTask(showLogListTask:false, isMainThread:isMainThread)
-        await DataModel.setShowTextCreateTask(showTextCreateTask:true, isMainThread:isMainThread)
+    public static func showTextCreateTask()async{
+        await DataModel.setShowLogListTask(showLogListTask:false)
+        await DataModel.setShowTextCreateTask(showTextCreateTask:true)
     }
     
     public static func handleTextGroupEmpsUpdated(emps : [[String:String]])async{
-        await showTextCreateTask(isMainThread:false)
-        await DataModel.updateTextGroupEmps(textGroupEmployees:emps, isMainThread:false)
+        await showTextCreateTask()
+        await DataModel.updateTextGroupEmps(textGroupEmployees:emps)
     }
     
     public static func getLogs(user:User?) async {
@@ -287,7 +287,7 @@ struct FlowController{
                     }
                 }
             }
-            await DataModel.updateLogData(logs:descArr, isMainThread:false)
+            await DataModel.updateLogData(logs:descArr)
 
         }catch{
             print(error)
@@ -296,24 +296,24 @@ struct FlowController{
     }
     
     public static func handleGetLogsButtonAction()async{
-        await previewLogsUpdateView(isMainThread:false)
+        await previewLogsUpdateView()
         await getLogs(user:dataModel.user)
     }
     
     public static func handleOnContentViewParentAppear()async{
-        await DataModel.updateLogData(logs: ConstantsEnum.MPTY_STRDICT_ARRAY, isMainThread:false)
+        await DataModel.updateLogData(logs: ConstantsEnum.MPTY_STRDICT_ARRAY)
     }
     
     public static func handleOnContentViewAppear()async{
-        await DataModel.updateLogData(logs: ConstantsEnum.MPTY_STRDICT_ARRAY, isMainThread:false)
+        await DataModel.updateLogData(logs: ConstantsEnum.MPTY_STRDICT_ARRAY)
     }
 
     public static func handleOnLoginViewAppear()async{
-        await DataModel.updateLogData(logs: ConstantsEnum.MPTY_STRDICT_ARRAY, isMainThread:false)
+        await DataModel.updateLogData(logs: ConstantsEnum.MPTY_STRDICT_ARRAY)
     }
     
     public static func handleOnTextCreateViewAppear()async{
-        await DataModel.updateLogData(logs: ConstantsEnum.MPTY_STRDICT_ARRAY, isMainThread:false)
+        await DataModel.updateLogData(logs: ConstantsEnum.MPTY_STRDICT_ARRAY)
     }
     
     public static func handleOnTaskViewAppear(){
