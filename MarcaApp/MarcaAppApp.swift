@@ -13,14 +13,14 @@ import SwiftUI
 
 @main
 final class MarcaAppApp: App {
-    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDele
-    
     init(){
         do{
-            //Amplify.Logging.logLevel = .error
+            Amplify.Logging.logLevel = .error
             try Amplify.add(plugin: AWSAPIPlugin())
             try Amplify.add(plugin: AWSCognitoAuthPlugin())
             try Amplify.configure()
+            
+            _D.debug = false
             
             print("Amplify configured with auth plugin")
         }catch{
@@ -29,49 +29,36 @@ final class MarcaAppApp: App {
         
         initCognito()
         initDataModel()
-        initFlowController()
         
         /**
          * if user logged in handled in background thread
-         * UI to respond/update asynchronously via dataModel @StateObject
+         * UI to respond/update asynchronously via model @StateObject
          */
         Task{
-            let loggedInUser:AuthUser? = await FlowController.getLoggedInUser()
-            await FlowController.handleIfUserLoggedIn(loggedInUser:loggedInUser)
+            let loggedInUser:AuthUser? = await CognitoProxy.getLoggedInUser()
+            await AppInitProxy.handleIfUserLoggedIn(loggedInUser:loggedInUser)
         }
     }
     
     var body: some Scene {
         WindowGroup {
             ContentViewParent()
-                .onAppear(perform: {
-                    Task{ await FlowController.handleOnContentViewParentAppear() }
-                    UIApplication.shared.addTapGestureRecognizer()
-                } )
         }
     }
-    
-    private func initFlowController() {
-        FlowController.setAppDelegate(appDele:appDele)
-    }
-  
+
     /*
      * static Singleton instance: instantiate once/store once
-     * attempts to try this again won't be pretty, but you can certainly try;-)
-     * strongly suggest that the instance is acquired via DataModel.getSingletonInstance()
-     * after setting it below
+     * after setting here instance is acquired by _M.M()
      */
     private func initDataModel() {
-        let dataModel = MarcaClassFactory.getInstance(className:"DataModel", kType: DataModel.self, instanceLabel:"dmA") as? DataModel
-        print("dataModel initialized : \(dataModel!.getInstanceLabel()) ")
+        let model = MarcaClassFactory.getInstance(className:"_M", kType: _M.self, instanceLabel:"modelA") as? _M
+        print("model initialized : \(model!.getInstanceLabel()) ")
     }
     
     /*
      * Cognito need not be a class for now. this is for future impls
      * static Singleton instance: instantiate once/store once
-     * attempts to try this again won't be pretty, but you can certainly try;-)
-     * strongly suggest that the instance is acquired via DataModel.getSingletonInstance()
-     * after setting it below
+     * after setting here instance is acquired via Cognito.getSingletonInstance()
      */
     private func initCognito() {
         let cognito = MarcaClassFactory.getInstance(className:"Cognito", kType: Cognito.self, instanceLabel:"cogA") as? Cognito
@@ -79,21 +66,32 @@ final class MarcaAppApp: App {
     }
 }
 
-extension UIApplication {
-    func addTapGestureRecognizer() {
-        guard let firstScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else { return }
-        guard let firstWindow = firstScene.windows.first else { return }
-        
-        let tapGesture = UITapGestureRecognizer(target: firstWindow, action: #selector(UIView.endEditing))
-        tapGesture.requiresExclusiveTouchType = false
-        tapGesture.cancelsTouchesInView = false
-        tapGesture.delegate = self
-        firstWindow.addGestureRecognizer(tapGesture)
+extension String {
+    func toJSON() -> Any? {
+        guard let data = self.data(using: .utf8, allowLossyConversion: false) else { return nil }
+        return try? JSONSerialization.jsonObject(with: data, options: .mutableContainers)
     }
 }
 
- extension UIApplication: UIGestureRecognizerDelegate {
-     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-         return true // set to `false` if you don't want to detect tap during other gestures
-     }
- }
+struct AppInitProxy{
+    public static func handleIfUserLoggedIn(loggedInUser:AuthUser?)async{
+        let isLoggedIn = loggedInUser != nil
+        await _M.setMainViewChoice(.loginView)
+        await _M.setTaskViewChoice(.logsView)
+        
+        if isLoggedIn {
+            await _M.setIsLoginButtonPressed(true)
+            let user:User = await Cognito.getUser(loggedInUser:loggedInUser)
+            await _M.setUser(user)//updates on main thread asap
+            await _M.setLoggedInUsername(user.userFirstNameLastI ?? _C.MPTY_STR)//updates on main thread asap
+            //introduce delay here so user can see their name in progress view
+            try? await Task.sleep(nanoseconds: 2_500_000_000)
+            await _M.setIsUserLoggedIn(true)//updates on main thread asap
+            await _M.setMainViewChoice(.taskView)
+            await LogsViewProxy.getLogs()//loading in background
+            await _M.setIsLoginButtonPressed(false)
+        }
+        
+        await _M.setCacheKiller(String(describing:Date().timeIntervalSince1970))
+    }
+}
