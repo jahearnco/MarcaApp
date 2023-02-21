@@ -207,9 +207,10 @@ final class _M:MarcaClass,ObservableSingleton {
         M().profileGroupCats = profileGroupCats
     }
 
-    @Published var textGroupCats:[[String:String]] = _C.TEXT_GROUP_CATEGORIES
-    @MainActor
-    public static func setTextGroupCats(_ textGroupCats:[[String:String]]){
-        M().textGroupCats = textGroupCats
-    }
+    @Published var textGroupCats:[[String:String]] = [
+        ["name":"Contacts-090822","title":"imp_temp", "role":"g"],
+        ["name":"Contacts-092522","title":"imp2_temp", "role":"g"],
+        ["name":"EPI-Admin","title":"on_site_admin", "role":"S"],
+        ["name":"RES-Temps","title":"temp", "role":"S"]
+    ] //var even though constant for now to be modifiable later - if @Published must not be a constant
 }

@@ -142,7 +142,7 @@ struct ProfileContactInfo: View{
     @State var statusSelection:[String:String] = _C.MPTY_STRDICT
     @State var refreshChoiceCount:Int = 0
     @State var profileStatus:String = "Status"
-    @State var selectType:MarcaSelectType = .profileStatusChoices
+    @State var selectType:MarcaSelectType = .editProfilesMenuChoices
     
     var fgColor:Color = _C.marcaGray
     
@@ -183,11 +183,11 @@ struct ProfileContactInfo: View{
     }
     
     func handleStatusSelectionChange(_ selection:[String:String]){
-        if let choiceCase = MarcaProfileStatusChoice(rawValue:selection["name"] ?? "") {
-            print("ProfileContactInfo handleStatusSelectionChange statusSelection : \(choiceCase)")
+        if let enumCase = MarcaProfileStatusChoice(rawValue:selection["name"] ?? "") {
+            print("ProfileContactInfo handleStatusSelectionChange statusSelection : \(enumCase)")
             
             //copy values before resetting selection
-            profileStatus = choiceCase.rawValue
+            profileStatus = enumCase.rawValue
             
             //save notes here
             print("saving profileStatus \(profileStatus) and notesInput \(notesInput) ... ")

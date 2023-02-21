@@ -8,6 +8,48 @@
 import Amplify
 import SwiftUI
 
+enum MarcaSelectType{
+    case editProfilesMenuChoices
+    case logsViewMenuChoices
+    case createTextMenuChoices
+    case loginMenuChoices
+    case profileStatusChoices
+}
+
+enum MarcaProfileStatusChoice:String,CaseIterable{
+    case dnr = "Do Not Return"
+    case excellent = "Excellent"
+    case good = "Good"
+    case poor = "Poor"
+    case late = "Late"
+    case sick = "Out Sick"
+    case unprocessed = "Unprocessed"
+}
+
+enum MarcaLoginMenuChoice:String,CaseIterable{
+    case about = "About MARCA"
+    case preferences = "Preferences"
+}
+
+enum MarcaLogsViewMenuChoice:String,CaseIterable{
+    case dateRange = "Date Range"
+    case workgroups = "Workgroups"
+    case topic = "Topic"
+    case severity = "Severity"
+}
+
+enum MarcaCreateTextMenuChoice:String,CaseIterable{
+    case titles = "Title"
+    case dept = "Department"
+    case workgroups = "Workgroups"
+}
+
+enum MarcaEditProfilesMenuChoice:String,CaseIterable{
+    case titles = "Title"
+    case dept = "Department"
+    case workgroups = "Workgroups"
+}
+
 struct MarcaSelect: View{
     @StateObject var model:_M = _M.M()
     
@@ -136,11 +178,30 @@ struct MarcaSelect: View{
     func handlePickerOnDisappear(){
         print("handlePickerOnDisappear \(selection) ")
     }
-
+    
+    func getAllEnumRawValues()->[String]{
+        switch type {
+        case .loginMenuChoices:
+            return MarcaLoginMenuChoice.allCases.map{ $0.rawValue }
+            
+        case .logsViewMenuChoices:
+            return MarcaLogsViewMenuChoice.allCases.map{ $0.rawValue }
+            
+        case .createTextMenuChoices:
+            return MarcaCreateTextMenuChoice.allCases.map{ $0.rawValue }
+            
+        case .editProfilesMenuChoices:
+            return MarcaEditProfilesMenuChoice.allCases.map{ $0.rawValue }
+            
+        case .profileStatusChoices:
+            return MarcaProfileStatusChoice.allCases.map{ $0.rawValue }
+        }
+    }
+    
     func populateChoices(){
         choices = []
-        for rawVal in MarcaSelectType.getStrArr(type){
-            let choice = ["name":rawVal]
+        for rv in getAllEnumRawValues(){
+            let choice = ["name":rv]
             choices.append(choice)
         }
     }

@@ -14,7 +14,7 @@ struct LoginView : View {
     
     @FocusState private var maybeFocusedField:Field?
     
-    @State var username: String = "John@everphase.net"
+    @State var username: String = "XXXXX"
     @State var password:String = _C.MPTY_STR
     @State var keychainPassword:String?
     @State var hideWelcomeText:Bool = false

@@ -7,7 +7,33 @@
 import Amplify
 import SwiftUI
 
-struct _C {
+enum MarcaViewChoice{
+    case noView
+    case loginView
+    case logoutChoiceView
+    case taskView
+    case textCreateView
+    case editProfileView
+    case logsView
+}
+
+enum MarcaProfileTitle:String,CaseIterable{
+    case temp = "Temp"
+    case fTemp = "FTemp"
+    case op = "Operator"
+    case on_site_not = "Conductor"
+    case on_site_admin = "OS Admin"
+    case on_site_support = "OS Supp"
+    case on_site_supervisor = "OS Supe"
+    case on_site_manager = "OS Mgr"
+    case floor_manager = "Floor Mgr"
+    case director = "Director"
+    case project_engineer = "Proj Eng"
+    case manager = "Manager"
+    case software_engineer = "Software Eng"
+}
+
+enum _C {
     /** App */
     static let OPT_STRING:String? = nil as String?
     static let OPT_ANYOBJECT:AnyObject? = nil as AnyObject?
@@ -77,14 +103,6 @@ struct _C {
         ["name":"S-T", "range":"st", "title":"on_site_admin"],
         ["name":"U-W", "range":"uvw", "title":"on_site_admin"],
         ["name":"X-Z", "range":"yz", "title":"on_site_admin"]
-    ]
-    
-    static let TEXT_GROUP_CATEGORIES:[[String:String]] = [
-        ["name":"Contacts-090822","title":"imp_temp", "role":"g"],
-        ["name":"Contacts-092522","title":"imp2_temp", "role":"g"],
-        ["name":"EPI-Admin","title":"on_site_admin", "role":"S"],
-        ["name":"RES-Temps","title":"temp", "role":"S"]
-    ]
-
+    ] //var even though constant for now to be modifiable later - if @Published must not be a constant
 }
 
