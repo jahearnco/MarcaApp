@@ -28,12 +28,6 @@ struct User{
     var logviewTimeframe:String? = "\(3600*1000*55*100)"//2 days
 }
 
-enum KeychainError: Error {
-    case noPassword
-    case unexpectedPasswordData
-    case unhandledError(_ status: OSStatus)
-}
-
 struct KeychainProxy{
     
     public static func updateKeychainPassword(creds:Credentials) throws -> (OSStatus, AnyObject?){
@@ -76,7 +70,7 @@ struct KeychainProxy{
             let query = [
                 kSecClass: kSecClassInternetPassword,
                 kSecAttrServer: svr,
-                kSecAttrAccount: "XXXXXX"
+                kSecAttrAccount: "John@everphase.net"
             ] as CFDictionary
             
             print("svr:\(svr) \(SecItemDelete(query))")

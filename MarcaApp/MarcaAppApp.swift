@@ -76,8 +76,10 @@ extension String {
 struct AppInitProxy{
     public static func handleIfUserLoggedIn(loggedInUser:AuthUser?)async{
         let isLoggedIn = loggedInUser != nil
+        
         await _M.setMainViewChoice(.loginView)
         await _M.setTaskViewChoice(.logsView)
+        await _M.setCacheKiller(String(describing:Date().timeIntervalSince1970))
         
         if isLoggedIn {
             await _M.setIsLoginButtonPressed(true)
@@ -91,7 +93,5 @@ struct AppInitProxy{
             await LogsViewProxy.getLogs()//loading in background
             await _M.setIsLoginButtonPressed(false)
         }
-        
-        await _M.setCacheKiller(String(describing:Date().timeIntervalSince1970))
     }
 }

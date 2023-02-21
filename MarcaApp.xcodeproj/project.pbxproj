@@ -35,6 +35,7 @@
 		079849D92990A83600F3E9DD /* MarcaTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 079849D82990A83500F3E9DD /* MarcaTextField.swift */; };
 		079849DB2990AB2000F3E9DD /* MarcaButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 079849DA2990AB2000F3E9DD /* MarcaButton.swift */; };
 		079849DE29935D6200F3E9DD /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 079849DD29935D6100F3E9DD /* EditProfileView.swift */; };
+		07BB065129A34E070034844E /* MarcaEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07BB065029A34E060034844E /* MarcaEnums.swift */; };
 		07BCB24A299B59BA007E0CAC /* MarcaLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07BCB249299B59BA007E0CAC /* MarcaLogView.swift */; };
 		07BCB24C299C45DC007E0CAC /* MarcaSelect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07BCB24B299C45DB007E0CAC /* MarcaSelect.swift */; };
 		07E3A3672975D0AA00D53F12 /* MarcaAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E3A3662975D0AA00D53F12 /* MarcaAppApp.swift */; };
@@ -63,6 +64,7 @@
 		079849DA2990AB2000F3E9DD /* MarcaButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarcaButton.swift; sourceTree = "<group>"; };
 		079849DD29935D6100F3E9DD /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
 		07AEFE8F2985D61B00509471 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		07BB065029A34E060034844E /* MarcaEnums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarcaEnums.swift; sourceTree = "<group>"; };
 		07BCB249299B59BA007E0CAC /* MarcaLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarcaLogView.swift; sourceTree = "<group>"; };
 		07BCB24B299C45DB007E0CAC /* MarcaSelect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarcaSelect.swift; sourceTree = "<group>"; };
 		07E3A3632975D0AA00D53F12 /* MarcaApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MarcaApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -160,6 +162,7 @@
 			isa = PBXGroup;
 			children = (
 				078523D029767CE2003FDB12 /* _C.swift */,
+				07BB065029A34E060034844E /* MarcaEnums.swift */,
 			);
 			path = Constants;
 			sourceTree = "<group>";
@@ -370,6 +373,7 @@
 				0785241429790AEF003FDB12 /* ContentView.swift in Sources */,
 				078523E729767CE5003FDB12 /* LoginView.swift in Sources */,
 				078523E529767CE5003FDB12 /* _C.swift in Sources */,
+				07BB065129A34E070034844E /* MarcaEnums.swift in Sources */,
 				079849D92990A83600F3E9DD /* MarcaTextField.swift in Sources */,
 				078523DB29767CE4003FDB12 /* Cognito.swift in Sources */,
 				078523DD29767CE4003FDB12 /* ContentViewParent.swift in Sources */,
