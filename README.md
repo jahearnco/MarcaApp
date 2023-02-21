@@ -63,6 +63,13 @@ MarcaApp :: an Amplify-Swift MARCA app with limited features including workgroup
     @Published var overlayIsShowing:Bool
     @Published var profileGroupCats:[[String:String]]
     @Published var textGroupCats:[[String:String]]
+# ![Marca Banner](Assets.xcassets/smallestlogo.png) &nbsp; <a href="https://github.com/jahearnco/MarcaApp/tree/main/MarcaApp/Ancillary/Factories">Factory</a>
+    protocol Marca{}
+    protocol Singleton{}
+    protocol ObservableSingleton:ObservableObject,Singleton{}
+    class MarcaClass:Marca{}
+    MarcaClassFactory public static func getInstance<T:MarcaClass>(className:String, kType:T.Type, instanceLabel:String=_C.MPTY_STR)->MarcaClass! {} 
+    MarcaClassFactory public static func handleNewInstance<T:MarcaClass>(instance:MarcaClass?, kType:T.Type, instanceLabel:String)throws {}
 # ![End Banner](Assets.xcassets/smallestlogo.png) &nbsp; <a href="https://www.everphase.net/resume">Everphase</a>
 Full Stack :: iOS :: AWS :: iOT :: LAMP :: Smart Devices :: EE :: Engineering Physics
 
