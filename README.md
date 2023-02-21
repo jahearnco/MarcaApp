@@ -1,16 +1,17 @@
 # ![Marca Banner](Assets.xcassets/smallestlogo.png) &nbsp; <a href="https://github.com/jahearnco/MarcaApp/tree/main/MarcaApp">MarcaApp</a>
-MARCA :: a Management And Resources Coordination Application
+MARCA : a Management And Resources Coordination Application
 
-MARCA :: currently an AWS based Operations and Resource Management suite implemented for a large scale mail-in balloting production. 
+MARCA : currently an AWS based Operations and Resource Management suite implemented for a large scale mail-in balloting production. 
 
-MARCA :: coordinates communications, notifications, reports, analyses, workgroups, operations, training & non-human resources.
+MARCA : coordinates communications, notifications, reports, analyses, workgroups, operations, training & non-human resources.
 
-MARCA :: leverages fast DynamoDB-Java workgroup lookup routines.
+MARCA : leverages fast DynamoDB-Java workgroup lookup routines.
 
-MARCA :: can be configured for most organization from families to clinics to mid-sized businesses to personal projects. Etc.
+MARCA : can be configured for most organizations : families to clinics to mid-sized businesses to personal projects. Etc.
+<a name="vid" />
 
-MarcaApp :: an Amplify-Swift MARCA app with limited features including workgroup messaging/texting & resource profile editing.
-# ![Marca Banner](Assets.xcassets/smallestlogo.png) &nbsp; <a href="https://youtu.be/eff2Ofq2ft0">Watch Video</a>
+MarcaApp : an Amplify-Swift MARCA app with limited features including workgroup messaging/texting & resource profile editing.
+# ![Marca Banner](Assets.xcassets/smallestlogo.png) &nbsp; <a href="https://youtu.be/eff2Ofq2ft0">Video</a>
    &nbsp; &nbsp; &nbsp; ![Marca Banner](Assets.xcassets/profile_1.png) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  ![Marca Banner](Assets.xcassets/groupText.png) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ![Marca Banner](Assets.xcassets/viewLogs.png)
 
 # ![Marca Banner](Assets.xcassets/smallestlogo.png) &nbsp; <a href="https://github.com/jahearnco/MarcaApp/tree/main/MarcaApp/Views/CustomViews">Custom Views</a>

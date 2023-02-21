@@ -108,6 +108,7 @@ struct ProfileStaffNotes: View{
         }
     }
 }
+
 struct ProfileImages: View{
     @StateObject var model:_M = _M.M()
     
@@ -363,7 +364,7 @@ struct EditProfileViewProxy{
             var catArr: [[String: String]] = _C.MPTY_STRDICT_ARRAY
             print("making RESTRequest for profile group categories ... ")
             
-            let request = RESTRequest(path:"/employees", queryParameters: ["cat":"PhotoNames", "value":_C.MPTY_STR, "range":range, "dept":"all", "title":title])
+            let request = RESTRequest(path:"/employees", queryParameters: ["cat":"PhotoNames", "value":"g", "range":range, "dept":"all", "title":title])
             
             do {
                 let data = try await Amplify.API.get(request: request)
