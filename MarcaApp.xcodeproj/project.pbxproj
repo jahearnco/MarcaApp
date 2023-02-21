@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		075C1E0529A48D0A00C9268B /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 075C1E0429A48D0A00C9268B /* README.md */; };
+		075C1E0729A48F0100C9268B /* MarcaEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075C1E0629A48F0100C9268B /* MarcaEnums.swift */; };
+		075C1E0929A494E600C9268B /* KeyChainProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 075C1E0829A494E600C9268B /* KeyChainProxy.swift */; };
 		078523DB29767CE4003FDB12 /* Cognito.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078523C229767CDE003FDB12 /* Cognito.swift */; };
 		078523DD29767CE4003FDB12 /* ContentViewParent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078523C429767CDF003FDB12 /* ContentViewParent.swift */; };
 		078523E429767CE5003FDB12 /* MarcaClassFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078523CF29767CE1003FDB12 /* MarcaClassFactory.swift */; };
@@ -42,6 +45,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		075C1E0429A48D0A00C9268B /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		075C1E0629A48F0100C9268B /* MarcaEnums.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarcaEnums.swift; sourceTree = "<group>"; };
+		075C1E0829A494E600C9268B /* KeyChainProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainProxy.swift; sourceTree = "<group>"; };
 		078523C229767CDE003FDB12 /* Cognito.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cognito.swift; sourceTree = "<group>"; };
 		078523C429767CDF003FDB12 /* ContentViewParent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentViewParent.swift; sourceTree = "<group>"; };
 		078523CF29767CE1003FDB12 /* MarcaClassFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarcaClassFactory.swift; sourceTree = "<group>"; };
@@ -109,6 +115,7 @@
 			isa = PBXGroup;
 			children = (
 				078523C229767CDE003FDB12 /* Cognito.swift */,
+				075C1E0829A494E600C9268B /* KeyChainProxy.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -159,6 +166,7 @@
 		079849CF298ECE7800F3E9DD /* Constants */ = {
 			isa = PBXGroup;
 			children = (
+				075C1E0629A48F0100C9268B /* MarcaEnums.swift */,
 				078523D029767CE2003FDB12 /* _C.swift */,
 			);
 			path = Constants;
@@ -237,6 +245,7 @@
 		07E3A35A2975D0A900D53F12 = {
 			isa = PBXGroup;
 			children = (
+				075C1E0429A48D0A00C9268B /* README.md */,
 				07E3A36A2975D0B400D53F12 /* Assets.xcassets */,
 				07AEFE8F2985D61B00509471 /* Info.plist */,
 				07E3A3652975D0AA00D53F12 /* MarcaApp */,
@@ -354,6 +363,7 @@
 			files = (
 				0785240329767FA3003FDB12 /* awsconfiguration.json in Resources */,
 				0785240429767FA3003FDB12 /* amplifyconfiguration.json in Resources */,
+				075C1E0529A48D0A00C9268B /* README.md in Resources */,
 				07E3A36B2975D0B400D53F12 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -370,7 +380,9 @@
 				0785241429790AEF003FDB12 /* ContentView.swift in Sources */,
 				078523E729767CE5003FDB12 /* LoginView.swift in Sources */,
 				078523E529767CE5003FDB12 /* _C.swift in Sources */,
+				075C1E0729A48F0100C9268B /* MarcaEnums.swift in Sources */,
 				079849D92990A83600F3E9DD /* MarcaTextField.swift in Sources */,
+				075C1E0929A494E600C9268B /* KeyChainProxy.swift in Sources */,
 				078523DB29767CE4003FDB12 /* Cognito.swift in Sources */,
 				078523DD29767CE4003FDB12 /* ContentViewParent.swift in Sources */,
 				0785241029790A14003FDB12 /* LogsView.swift in Sources */,
