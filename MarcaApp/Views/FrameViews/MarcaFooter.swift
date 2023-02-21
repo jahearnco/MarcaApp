@@ -89,7 +89,7 @@ struct MarcaFooter: View {
         }
     }
     
-    func getCaption(authDidFail:Bool)->String{
+    private func getCaption(authDidFail:Bool)->String{
         var retMssg:String = _C.MPTY_STR
         if (authDidFail) {
             retMssg = "Login Info is not correct. Try again."
@@ -117,7 +117,7 @@ struct MarcaFooter: View {
         _M.setTaskViewChoice(.textCreateView)
     }
     
-    func showLogoutChoiceButtonAction(){
+    private func showLogoutChoiceButtonAction(){
         _M.setMainViewChoice(.logoutChoiceView)
     }
 }

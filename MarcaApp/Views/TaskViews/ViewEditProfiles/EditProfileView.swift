@@ -23,10 +23,6 @@ struct EditProfileView: View {
     @Environment(\.dismiss) var dismiss
     @StateObject var model:_M = _M.M()
 
-    init(){
-        _D.debug = false
-    }
-    
     var body: some View {
         VStack(alignment: .center, spacing: 0){
             NavigationView {
@@ -34,7 +30,7 @@ struct EditProfileView: View {
                         if let catName:String = cat["name"]  {
                             NavigationLink(catName, destination:ProfileCatViewLink(profileGroupCategory:cat))
                                 .padding(EdgeInsets(top:0, leading:4, bottom:0, trailing:0))
-                                .onAppear(perform: { print("Edit Profiles NavigationLink onAppear ")})
+                                .onAppear(perform: { _D.print("Edit Profiles NavigationLink onAppear ") })
                         }
                     }
                     .padding(0)
@@ -85,7 +81,7 @@ struct ProfileSummaryView: View {
                 //no idea why this is needed but it is! this view is not being dismissed apparently
                 if model.taskViewChoice == .editProfileView{
                     await EditProfileViewProxy.getEmployeeProfile(empId:empId)
-                    print("ProfileSummaryView .onAppear model.profileStaffNotes:\(String(describing:model.profileStaffNotes))")
+                    _D.print("ProfileSummaryView .onAppear model.profileStaffNotes:\(String(describing:model.profileStaffNotes))")
                 }
             }
         } )
@@ -143,7 +139,7 @@ struct ProfileContactInfo: View{
     @State var statusSelection:[String:String] = _C.MPTY_STRDICT
     @State var refreshChoiceCount:Int = 0
     @State var profileStatus:String = "Status"
-    @State var selectType:MarcaSelectType = .profileStatusChoices
+    @State var marcaSelectType:MarcaSelectType = .profileStatusChoices
     
     var fgColor:Color = _C.marcaGray
     
@@ -164,7 +160,7 @@ struct ProfileContactInfo: View{
                     MarcaTextField(text:$model.profile.salary, pre:"r", fgColor:fgColor, fieldName:"Input Salary", fontSize:16, fontWeight:Font.Weight.semibold, bunPadding:4, sidePadding:0)
                     MarcaSelect(
                         selection:$statusSelection,
-                        type:$selectType,
+                        marcaSelectType:$marcaSelectType,
                         width:gr.size.width-28,
                         height:gr.size.height/3-24,
                         key:"name",
@@ -179,11 +175,11 @@ struct ProfileContactInfo: View{
         .padding([.leading,.trailing], 10)
         .padding(.bottom, 24)
         .onChange(of:statusSelection, perform:{ ss in handleStatusSelectionChange(ss) } )
-        .onAppear(perform:{ selectType = .profileStatusChoices })
-        .onChange(of:selectType, perform:{ s in selectType = .profileStatusChoices })
+        .onAppear(perform:{ marcaSelectType = .profileStatusChoices })
+        .onChange(of:marcaSelectType, perform:{ s in marcaSelectType = .profileStatusChoices })
     }
     
-    func handleStatusSelectionChange(_ selection:[String:String]){
+    private func handleStatusSelectionChange(_ selection:[String:String]){
         if let choiceCase = MarcaProfileStatusChoice(rawValue:selection["name"] ?? "") {
             print("ProfileContactInfo handleStatusSelectionChange statusSelection : \(choiceCase)")
             
@@ -323,7 +319,7 @@ struct ProfileCatViewLink: View {
                     if let empId = empDict["id"], let empName = empDict["name"]  {
                         NavigationLink(empName, destination:ProfileSummaryView(empId:empId))
                             .padding(EdgeInsets(top:0, leading:4, bottom:0, trailing:0))
-                            .onAppear(perform: { print("Edit Profiles NavigationLink onAppear ")})
+                            .onAppear(perform: { _D.print("Edit Profiles NavigationLink onAppear ") })
                     }
                 }
                 .font(.custom("verdana", size: 12))
@@ -432,7 +428,7 @@ struct EditProfileViewProxy{
             
             if let pd = try JSONSerialization.jsonObject(with: data, options: []) as? NSDictionary
             {
-                print("getEmployeeProfile profileStrDict : \(pd) ")
+                _D.print("getEmployeeProfile profileStrDict : \(pd) ")
                 
                 print("getEmployeeProfile contactInfo : \(String(describing:pd["contactInfo"])) ")
                 
@@ -467,7 +463,7 @@ struct EditProfileViewProxy{
                             }
                             staffNotes.append(["auth":authStr ?? "", "desc":descStr ?? "", "profileNoteDateStr":dateStr ?? "", "descNote":status ?? ""])
                         }
-                        print("staffNotes = \(staffNotes)")
+                        _D.print("staffNotes = \(staffNotes)")
                     }
 
                 }

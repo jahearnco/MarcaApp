@@ -13,7 +13,7 @@ struct MarcaSelect: View{
     
     @Binding var selection:[String:String]
     
-    @Binding var type:MarcaSelectType
+    @Binding var marcaSelectType:MarcaSelectType
     @State var width:CGFloat
     @State var height:CGFloat
     
@@ -95,12 +95,12 @@ struct MarcaSelect: View{
             handleTapOccurredChange(wasTapped:t, outsideTap:true)
         })
         .onChange(of:refreshChoiceCount, perform:{rc in handleRefreshChoices() })
-        .onChange(of:type, perform: {t in handleTypeChange(t) })
-        .onChange(of:model.taskViewChoice, perform: {tvc in handleTypeChange(type) })
-        .onChange(of:model.mainViewChoice, perform: {mvc in handleTypeChange(type) })
+        .onChange(of:marcaSelectType, perform: {t in handleTypeChange() })
+        .onChange(of:model.taskViewChoice, perform: {tvc in handleTypeChange() })
+        .onChange(of:model.mainViewChoice, perform: {mvc in handleTypeChange() })
     }
     
-    func handleTypeChange(_ marcaSelectType:MarcaSelectType){
+    func handleTypeChange(){
         print("MarcaSelect handleTypeChange marcaSelectType: \(marcaSelectType)")
     }
     
@@ -139,7 +139,7 @@ struct MarcaSelect: View{
 
     func populateChoices(){
         choices = []
-        for rawVal in MarcaSelectType.getStrArr(type){
+        for rawVal in MarcaSelectType.getStrArr(marcaSelectType){
             let choice = ["name":rawVal]
             choices.append(choice)
         }

@@ -8,9 +8,14 @@
 import SwiftUI
 
 struct _D{
-    static var debug:Bool = false
+    static var fltDebug:Bool = false
+    static var printDebug:Bool = false
     
     static func flt(_ flt:CGFloat)->CGFloat{
-        return debug ? flt : 0.0
+        return fltDebug ? flt : 0.0
+    }
+    
+    static func print(_ str:String){
+        if printDebug { print(str) }
     }
 }

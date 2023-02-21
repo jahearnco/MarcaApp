@@ -148,8 +148,8 @@ struct LogBody: View{
         .padding(.bottom, 4)
         .padding([.leading,.trailing], 9)
         .border(Color.green, width:_D.flt(1))
-        .onAppear(perform: { print("LogBody onAppear logDict:\(String(describing: logDict))"); } )
-        .onChange(of:logDict, perform: { dict in print("LogBody onChange logDict:\(String(describing: dict))"); } )
+        .onAppear(perform: { _D.print("LogBody onAppear logDict:\(String(describing: logDict))"); } )
+        .onChange(of:logDict, perform: { dict in _D.print("LogBody onChange logDict:\(String(describing: dict))"); } )
     }
     
     struct LeftArrow: View{

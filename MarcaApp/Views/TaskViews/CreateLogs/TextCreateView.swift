@@ -117,7 +117,7 @@ struct TextCreateFields: View {
         return model.cellPhoneDict == _C.MPTY_STRDICT || textTitle == _C.MPTY_STR || textBody == _C.MPTY_STR
     }
     
-    func createAndSendText(){
+    private func createAndSendText(){
         var numList:String = _C.MPTY_STR
         var sep = _C.MPTY_STR
         let pipesep = "|"
@@ -138,7 +138,7 @@ struct TextCreateFields: View {
         }
     }
     
-    func handleTextCreate(success:Bool) async{
+    private func handleTextCreate(success:Bool) async{
         textTitle = _C.MPTY_STR
         textBody = _C.MPTY_STR
         await TextCreateViewProxy.handleTextCreated(success:success)

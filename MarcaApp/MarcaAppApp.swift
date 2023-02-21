@@ -20,7 +20,8 @@ final class MarcaAppApp: App {
             try Amplify.add(plugin: AWSCognitoAuthPlugin())
             try Amplify.configure()
             
-            _D.debug = false
+            _D.fltDebug = false
+            _D.printDebug = false
             
             print("Amplify configured with auth plugin")
         }catch{

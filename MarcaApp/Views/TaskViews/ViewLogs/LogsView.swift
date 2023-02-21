@@ -11,8 +11,6 @@ struct LogsView: View {
     @Environment(\.dismiss) var dismiss
     @StateObject var model:_M = _M.M()
 
-    //@Binding var logList:[[String:String]]
-    
     var bgColor:Color = _C.marcaLightGray
     var bodyHeight:CGFloat = 86
     var outerMarginWidth:CGFloat = 16
@@ -33,10 +31,10 @@ struct LogsView: View {
         .opacity(model.menuDoesAppear ? 0.2 : 1)
         .border(Color.green, width:_D.flt(1))
         .onAppear(perform: {
-            print("LogsView onAppear logList:\(String(describing:model.logs))")
+            _D.print("LogsView onAppear logList:\(String(describing:model.logs))")
         } )
         .onChange(of:model.logs, perform: { list in
-            print("LogsView onChange logList:\(String(describing: list))")
+            _D.print("LogsView onChange logList:\(String(describing: list))")
         } )
     }
 }
@@ -54,10 +52,10 @@ struct CommunityLogsView: View {
         }
         .onAppear(perform: {
             LogsViewProxy.handleOnCommunityLogsViewAppear();
-            print("CommunityLogsView onAppear logList:\(String(describing: model.logs))")
+            _D.print("CommunityLogsView onAppear logList:\(String(describing: model.logs))")
         } )
         .onChange(of:model.logs, perform: { list in
-            print("CommunityLogsView onChange logList:\(String(describing: list))")
+            _D.print("CommunityLogsView onChange logList:\(String(describing: list))")
         } )
         .onChange(of:model.taskViewChoice, perform:{ tvc in
             if tvc != .logsView {

@@ -36,7 +36,7 @@ struct MarcaHeader: View {
         .onTapGesture { _M.setTapOccurred(true) }
     }
 
-    func handleOrientationChange(_ isPortrait:Bool){
+    private func handleOrientationChange(_ isPortrait:Bool){
         let height:CGFloat = isPortrait ? _C.HEADER_HEIGHT_PORTRAIT : _C.HEADER_HEIGHT_LANDSCAPE
         _M.setHeaderHeight(height)
     }
@@ -54,7 +54,7 @@ struct LogoButton : View{
         .padding(EdgeInsets(top:0, leading:6, bottom:0, trailing:0))
     }
     
-    func getLogoWidth(appFullWidth:CGFloat, aspectRatio:CGFloat)->CGFloat{
+    private func getLogoWidth(appFullWidth:CGFloat, aspectRatio:CGFloat)->CGFloat{
         let scale = aspectRatio < 1.0 ? 0.33 : 0.24
         return appFullWidth*scale
     }
@@ -74,15 +74,15 @@ struct Title : View{
         .border(Color.green, width:_D.flt(1))
     }
     
-    func getFont(isLoggedIn:Bool)->Font{
+    private func getFont(isLoggedIn:Bool)->Font{
         return isLoggedIn ? Font.custom("Optima-Bold", size:17) : Font.custom("Optima-Bold", size:19)
     }
     
-    func getTitleString(isLoggedIn:Bool, currentViewTitle:String?)->String{
+    private func getTitleString(isLoggedIn:Bool, currentViewTitle:String?)->String{
         return isLoggedIn ? currentViewTitle ?? _C.MPTY_STR : "MARCA"
     }
     
-    func getEdgeInsets(_ isLoggedIn:Bool)->EdgeInsets{
+    private func getEdgeInsets(_ isLoggedIn:Bool)->EdgeInsets{
         return isLoggedIn ? EdgeInsets(top:0, leading: 0, bottom:-1, trailing:20) : EdgeInsets(top:0, leading: 0, bottom:-1, trailing:0)
     }
 }
@@ -93,12 +93,12 @@ struct ActionButton : View{
     @State var preferenceSelection:[String:String] = _C.MPTY_STRDICT
     @State var refreshChoiceCount:Int = 0
     @State var menuTitle:String = ""
-    @State var selectType:MarcaSelectType = .loginMenuChoices
+    @State var marcaSelectType:MarcaSelectType = .loginMenuChoices
     
     var body: some View {
         MarcaSelect(
             selection:$preferenceSelection,
-            type:$selectType,
+            marcaSelectType:$marcaSelectType,
             width:getFrameSize(model.isUserLoggedIn).0,
             height:getFrameSize(model.isUserLoggedIn).1,
             key:"name",
@@ -112,44 +112,47 @@ struct ActionButton : View{
         )
         .padding(EdgeInsets(top:0, leading:0, bottom:-6, trailing:12))
         .onChange(of:preferenceSelection, perform:{ ps in handlePreferenceSelectionChange(ps) } )
-        .onChange(of:model.taskViewChoice, perform: { tvc in getMarcaSelectType(tvc) })
-        .onChange(of:model.isUserLoggedIn, perform: { iuli in getMarcaSelectType(model.taskViewChoice) })
+        .onChange(of:model.taskViewChoice, perform: { tvc in getMarcaSelectType() })
+        .onChange(of:model.mainViewChoice, perform: { mvc in getMarcaSelectType() })
+        .onChange(of:model.isUserLoggedIn, perform: { iuli in getMarcaSelectType() })
+        .onChange(of:marcaSelectType, perform: { mst in getMarcaSelectType() })
     }
     
-    func getMarcaSelectType(_ taskView:MarcaViewChoice){
-        print("getMarcaSelectType taskView: \(taskView)")
+    private func getMarcaSelectType(){
         if model.isUserLoggedIn {
-            switch taskView {
-            case .loginView:
-                selectType = .loginMenuChoices
-                
+            switch model.taskViewChoice {
             case .editProfileView:
-                selectType = .editProfilesMenuChoices
+                marcaSelectType = .editProfilesMenuChoices
+                print("getMarcaSelectType .editProfileView")
                 
             case .logsView:
-                selectType = .logsViewMenuChoices
+                marcaSelectType = .logsViewMenuChoices
+                print("getMarcaSelectType .logsView")
                 
             case .textCreateView:
-                selectType = .createTextMenuChoices
+                marcaSelectType = .createTextMenuChoices
+                print("getMarcaSelectType .textCreateView")
                 
             default:
-                selectType = .loginMenuChoices
+                marcaSelectType = .createTextMenuChoices
+                print("getMarcaSelectType default")
             }
         }else{
-            selectType = .loginMenuChoices
+            marcaSelectType = .loginMenuChoices
+            print("getMarcaSelectType not logged in")
         }
     }
     
-    func getImage(_ loggedIn:Bool)->Image{
+    private func getImage(_ loggedIn:Bool)->Image{
         return loggedIn ? Image(systemName: "slider.horizontal.3") : Image(systemName: "line.3.horizontal")
     }
     
-    func handlePreferenceSelectionChange(_ selection:[String:String]){
+    private func handlePreferenceSelectionChange(_ selection:[String:String]){
         //menu has collapsed and now is time to delete choices in MarcaSelect
         refreshChoiceCount = refreshChoiceCount + 1
     }
     
-    func getFrameSize(_ isUserLoggedIn:Bool)->(CGFloat,CGFloat){
+    private func getFrameSize(_ isUserLoggedIn:Bool)->(CGFloat,CGFloat){
         return isUserLoggedIn ? (28.0, 22.0) : (28.0, 22.0)
     }
 }
