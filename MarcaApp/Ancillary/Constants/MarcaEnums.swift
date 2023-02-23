@@ -24,64 +24,28 @@ enum MarcaViewChoice{
     case logsView
 }
 
-enum MarcaProfileTitle:String,CaseIterable{
-    case temp = "Temp"
-    case fTemp = "FTemp"
-    case op = "Operator"
-    case on_site_not = "Conductor"
-    case on_site_admin = "OS Admin"
-    case on_site_support = "OS Supp"
-    case on_site_supervisor = "OS Supe"
-    case on_site_manager = "OS Mgr"
-    case floor_manager = "Floor Mgr"
-    case director = "Director"
-    case project_engineer = "Proj Eng"
-    case manager = "Manager"
-    case software_engineer = "Software Eng"
-}
+enum MarcaSelectType:Hashable {
 
-enum MarcaLoginMenuChoice:String,CaseIterable{
-    case about = "About MARCA"
-    case preferences = "Preferences"
-}
+    case loginMenuChoices(MarcaLoginMenuChoice)
+    case logsViewMenuChoices(MarcaLogsViewMenuChoice)
+    case createTextMenuChoices(MarcaCreateTextMenuChoice)
+    case editProfilesMenuChoices(MarcaEditProfilesMenuChoice)
+    case profileStatusChoices(MarcaProfileStatusChoice)
 
-enum MarcaCreateTextMenuChoice:String,CaseIterable{
-    case titles = "Title"
-    case dept = "Department"
-    case workgroups = "Workgroups"
-}
-
-enum MarcaEditProfilesMenuChoice:String,CaseIterable{
-    case titles = "Title"
-    case dept = "Department"
-    case workgroups = "Workgroups"
-}
-
-enum MarcaProfileStatusChoice:String,CaseIterable{
-    case dnr = "Do Not Return"
-    case excellent = "Excellent"
-    case good = "Good"
-    case poor = "Poor"
-    case late = "Late"
-    case sick = "Out Sick"
-    case unprocessed = "Unprocessed"
-}
-
-enum MarcaLogsViewMenuChoice:String,CaseIterable{
-    case dateRange = "Date Range"
-    case workgroups = "Workgroups"
-    case topic = "Topic"
-    case severity = "Severity"
-}
-
-enum MarcaSelectType:String,CaseIterable {
+    /*
+    static var allCases: [MarcaSelectType] {
+        return
+            HousingType.HousingSubType.allCases.map(HousingType.house)
+                + HousingType.HousingSubType.allCases.map(HousingType.apartment)
+                + HousingType.HousingSubType.allCases.map(HousingType.mansion)
+    }
+    */
     
-    case loginMenuChoices //MarcaLoginMenuChoice
-    case logsViewMenuChoices //MarcaLogsViewMenuChoice
-    case createTextMenuChoices //MarcaLogsViewMenuChoice
-    case editProfilesMenuChoices //MarcaEditProfilesMenuChoice
-    case profileStatusChoices //MarcaProfileStatusChoice
-
+    func p(){
+        print("\(MarcaSelectType.MarcaLoginMenuChoice.allCases.map(MarcaSelectType.loginMenuChoices))")
+    }
+    
+    /*
     public static func getStrArr(_ msType:MarcaSelectType)->[String]{
         var rvArr:[RawValue]
         switch msType{
@@ -102,6 +66,57 @@ enum MarcaSelectType:String,CaseIterable {
             rvArr = MarcaProfileStatusChoice.allValues
         }
         return rvArr as [String]
+    }
+     */
+    
+    enum MarcaProfileTitle:String,CaseIterable{
+        case temp = "Temp"
+        case fTemp = "FTemp"
+        case op = "Operator"
+        case on_site_not = "Conductor"
+        case on_site_admin = "OS Admin"
+        case on_site_support = "OS Supp"
+        case on_site_supervisor = "OS Supe"
+        case on_site_manager = "OS Mgr"
+        case floor_manager = "Floor Mgr"
+        case director = "Director"
+        case project_engineer = "Proj Eng"
+        case manager = "Manager"
+        case software_engineer = "Software Eng"
+    }
+
+    enum MarcaLoginMenuChoice:String,CaseIterable{
+        case about = "About MARCA"
+        case preferences = "Preferences"
+    }
+
+    enum MarcaCreateTextMenuChoice:String,CaseIterable{
+        case titles = "Title"
+        case dept = "Department"
+        case workgroups = "Workgroups"
+    }
+
+    enum MarcaEditProfilesMenuChoice:String,CaseIterable{
+        case titles = "Title"
+        case dept = "Department"
+        case workgroups = "Workgroups"
+    }
+
+    enum MarcaProfileStatusChoice:String,CaseIterable{
+        case dnr = "Do Not Return"
+        case excellent = "Excellent"
+        case good = "Good"
+        case poor = "Poor"
+        case late = "Late"
+        case sick = "Out Sick"
+        case unprocessed = "Unprocessed"
+    }
+
+    enum MarcaLogsViewMenuChoice:String,CaseIterable{
+        case dateRange = "Date Range"
+        case workgroups = "Workgroups"
+        case topic = "Topic"
+        case severity = "Severity"
     }
 }
 

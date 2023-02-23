@@ -1,16 +1,16 @@
 # ![Marca Banner](Assets.xcassets/smallestlogo.png) &nbsp; <a href="https://github.com/jahearnco/MarcaApp/tree/main/MarcaApp">MarcaApp</a>
-MARCA : a Management And Resources Coordination Application
+MARCA is a Management And Resources Coordination Application
 
-MARCA : currently an AWS based Operations and Resource Management suite implemented for a large scale mail-in balloting production. 
+<li>currently an AWS based Operations and Resource Management suite implemented for a large scale mail-in balloting production. 
 
-MARCA : coordinates communications, notifications, reports, analyses, workgroups, operations, training & non-human resources.
+<li>coordinates communications, notifications, reports, analyses, workgroups, operations, training & non-human resources.
 
-MARCA : leverages fast DynamoDB-Java workgroup lookup routines.
+<li>leverages fast DynamoDB-Java workgroup lookup routines.
 
-MARCA : can be configured for most organizations : families to clinics to mid-sized businesses to personal projects. Etc.
-<a name="vid" />
+<li>can be configured for most organizations : families to clinics to mid-sized businesses to personal projects. Etc.
+<a name="vid" /><br/><br/>
 
-MarcaApp : an Amplify-Swift MARCA app with limited features including workgroup messaging/texting & resource profile editing.
+MarcaApp is an Amplify-Swift app version of MARCA with limited features of workgroup messaging/texting & resource profile editing.
 # ![Marca Banner](Assets.xcassets/smallestlogo.png) &nbsp; <a href="https://youtu.be/eff2Ofq2ft0">Video</a>
    &nbsp; &nbsp; &nbsp; ![Marca Banner](Assets.xcassets/profile_1.png) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  ![Marca Banner](Assets.xcassets/groupText.png) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ![Marca Banner](Assets.xcassets/viewLogs.png)
 
