@@ -24,8 +24,8 @@ struct TextCreateView: View {
     var body: some View {
         VStack(alignment: .center, spacing: 0){
             NavigationView {
-                List(model.textGroupCats, id: \.self) { cat in
-                    if let catName:String = cat["name"]  {
+                List(model.textGroupCats) { cat in
+                    if let catName:String = cat.name  {
                         NavigationLink(catName, destination:TextCatViewLink(textGroupCategory:cat))
                             .padding(EdgeInsets(top:0, leading:4, bottom:0, trailing:0))
                             .onAppear(perform: { print("NavigationLink onAppear ")})
@@ -57,15 +57,15 @@ struct TextCreateView: View {
 
 struct TextCatViewLink: View {
     @StateObject var model:_M = _M.M()
-    var textGroupCategory:[String:String]
+    var textGroupCategory:IdentifiableGroupCategories
     
     var body: some View {
-        if let title = textGroupCategory["title"], let role = textGroupCategory["role"]{
+        if let title = textGroupCategory.title, let role = textGroupCategory.role{
             VStack(alignment: .center, spacing: 0){
-                List(model.textGroupEmployees, id: \.self) { empDict in
+                List(model.textGroupEmployees) { emp in
                     VStack(alignment: .center, spacing: 0){
-                        if let phone = empDict["phone"] {
-                            if let empName = empDict["name"] {
+                        if let phone = emp.phone {
+                            if let empName = emp.name {
                                 CheckboxFieldView(empName:empName, phone:phone)
                             }
                         }
@@ -256,7 +256,7 @@ struct TextCreateViewProxy{
     }
     
     public static func getTextingCatEmps(title:String, role:String) async{
-        var catArr: [[String: String]] = _C.MPTY_STRDICT_ARRAY
+        var catArr: [IdentifiableGroupEmployees] = []
         print("making RESTRequest for texting group categories ... ")
         
         //https://gely35v1j1.execute-api.us-west-2.amazonaws.com/prod/employees?cat=TimeStation&value=S&dept=all&title=on_site_admin
@@ -273,7 +273,7 @@ struct TextCreateViewProxy{
                     
                     print("textCats.count = \(textCats.count)")
                     
-                    var doAppend = true
+                    let doAppend = true
                     /*DEMO ONLY
                     var prevLastinitial:String = ""
                     var lastinitial:String = "A"
@@ -320,7 +320,7 @@ struct TextCreateViewProxy{
                                         }
                                         
                                         if (phone != nil && empName != nil){
-                                            let empContactDict:[String:String] = ["name": empName! ,"phone":phone!]
+                                            let empContactDict:IdentifiableGroupEmployees = IdentifiableGroupEmployees(name: empName! ,phone:phone!)
                                             if doAppend {
                                                 catArr.append(empContactDict)
                                             }
@@ -342,7 +342,7 @@ struct TextCreateViewProxy{
         }
     }
     
-    public static func handleTextGroupEmpsUpdated(emps : [[String:String]])async{
+    public static func handleTextGroupEmpsUpdated(emps : [IdentifiableGroupEmployees])async{
         await _M.updateTextGroupEmps(emps)
     }
     

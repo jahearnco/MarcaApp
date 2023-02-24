@@ -73,6 +73,7 @@ enum MarcaLogsViewMenuChoice:String,CaseIterable{
     case severity = "Severity"
 }
 
+
 enum MarcaSelectType:String,CaseIterable {
     
     case loginMenuChoices //MarcaLoginMenuChoice
@@ -80,6 +81,7 @@ enum MarcaSelectType:String,CaseIterable {
     case createTextMenuChoices //MarcaLogsViewMenuChoice
     case editProfilesMenuChoices //MarcaEditProfilesMenuChoice
     case profileStatusChoices //MarcaProfileStatusChoice
+
     public static func getStrArr(_ msType:MarcaSelectType)->[String]{
         var rvArr:[RawValue]
         switch msType{

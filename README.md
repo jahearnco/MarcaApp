@@ -59,11 +59,11 @@ MarcaApp is a limited feature app version of MARCA based on iOS Amplify-Swift li
     @Published var logs:[[String:String]]
     @Published var communityLogs:[[String:String]]
     @Published var cellPhoneDict:[String:String]
-    @Published var textGroupEmployees:[[String:String]]
-    @Published var profileGroupEmployees:[[String:String]]
+    @Published var textGroupEmployees:[IdentifiableGroupEmployees]
+    @Published var profileGroupEmployees:[IdentifiableGroupEmployees]
     @Published var overlayIsShowing:Bool
-    @Published var profileGroupCats:[[String:String]]
-    @Published var textGroupCats:[[String:String]]
+    @Published var profileGroupCats:[IdentifiableGroupCategories]
+    @Published var textGroupCats:[IdentifiableGroupCategories]
 # ![Marca Banner](Assets.xcassets/smallestlogo.png) &nbsp; <a href="https://github.com/jahearnco/MarcaApp/tree/main/MarcaApp/Ancillary/Factories">Factory</a>
     protocol Marca{}
     protocol Singleton{}

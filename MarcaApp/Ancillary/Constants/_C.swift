@@ -64,27 +64,26 @@ struct _C {
     static let marcaRed:Color = Color(red: 195.0/255.0, green: 75.0/255.0, blue: 40.0/255.0, opacity: 1.0)
     
     
-    static let PROFILE_GROUP_CATEGORIES:[[String:String]] = [
-        ["name":"A-B", "range":"ab", "title":"on_site_admin"],
-        ["name":"C-D", "range":"cd", "title":"on_site_admin"],
-        ["name":"E-F", "range":"ef", "title":"on_site_admin"],
-        ["name":"G-H", "range":"gh", "title":"on_site_admin"],
-        ["name":"I-J", "range":"ij", "title":"on_site_admin"],
-        ["name":"K-L", "range":"kl", "title":"on_site_admin"],
-        ["name":"M-N", "range":"mn", "title":"on_site_admin"],
-        ["name":"O-P", "range":"op", "title":"on_site_admin"],
-        ["name":"Q-R", "range":"qr", "title":"on_site_admin"],
-        ["name":"S-T", "range":"st", "title":"on_site_admin"],
-        ["name":"U-W", "range":"uvw", "title":"on_site_admin"],
-        ["name":"X-Z", "range":"yz", "title":"on_site_admin"]
+    static let PROFILE_GROUP_CATEGORIES:[IdentifiableGroupCategories] = [
+        IdentifiableGroupCategories(name:"A-B", range:"ab", title:"on_site_admin"),
+        IdentifiableGroupCategories(name:"C-D", range:"cd", title:"on_site_admin"),
+        IdentifiableGroupCategories(name:"E-F", range:"ef", title:"on_site_admin"),
+        IdentifiableGroupCategories(name:"G-H", range:"gh", title:"on_site_admin"),
+        IdentifiableGroupCategories(name:"I-J", range:"ij", title:"on_site_admin"),
+        IdentifiableGroupCategories(name:"K-L", range:"kl", title:"on_site_admin"),
+        IdentifiableGroupCategories(name:"M-N", range:"mn", title:"on_site_admin"),
+        IdentifiableGroupCategories(name:"O-P", range:"op", title:"on_site_admin"),
+        IdentifiableGroupCategories(name:"Q-R", range:"qr", title:"on_site_admin"),
+        IdentifiableGroupCategories(name:"S-T", range:"st", title:"on_site_admin"),
+        IdentifiableGroupCategories(name:"U-W", range:"uvw", title:"on_site_admin"),
+        IdentifiableGroupCategories(name:"X-Z", range:"yz", title:"on_site_admin")
     ]
     
-    static let TEXT_GROUP_CATEGORIES:[[String:String]] = [
-        ["name":"Contacts-090822","title":"imp_temp", "role":"g"],
-        ["name":"Contacts-092522","title":"imp2_temp", "role":"g"],
-        ["name":"EPI-Admin","title":"on_site_admin", "role":"S"],
-        ["name":"RES-Temps","title":"temp", "role":"S"]
+    static let TEXT_GROUP_CATEGORIES:[IdentifiableGroupCategories] = [
+        IdentifiableGroupCategories(name:"Contacts-090822",title:"imp_temp", role:"g"),
+        IdentifiableGroupCategories(name:"Contacts-092522",title:"imp2_temp", role:"g"),
+        IdentifiableGroupCategories(name:"EPI-Admin",title:"on_site_admin", role:"S"),
+        IdentifiableGroupCategories(name:"RES-Temps",title:"temp", role:"S")
     ]
 
 }
-

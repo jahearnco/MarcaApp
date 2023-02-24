@@ -26,8 +26,8 @@ struct EditProfileView: View {
     var body: some View {
         VStack(alignment: .center, spacing: 0){
             NavigationView {
-                    List(model.profileGroupCats, id: \.self) { cat in
-                        if let catName:String = cat["name"]  {
+                    List(model.profileGroupCats) { cat in
+                        if let catName:String = cat.name  {
                             NavigationLink(catName, destination:ProfileCatViewLink(profileGroupCategory:cat))
                                 .padding(EdgeInsets(top:0, leading:4, bottom:0, trailing:0))
                                 .onAppear(perform: { _D.print("Edit Profiles NavigationLink onAppear ") })
@@ -136,7 +136,7 @@ struct ProfileContactInfo: View{
     
     @State var textFieldHeight:CGFloat = 32
     @State var notesInput:String = ""
-    @State var statusSelection:[String:String] = _C.MPTY_STRDICT
+    @State var statusSelection:String = _C.MPTY_STR
     @State var refreshChoiceCount:Int = 0
     @State var profileStatus:String = "Status"
     @State var marcaSelectType:MarcaSelectType = .profileStatusChoices
@@ -179,8 +179,8 @@ struct ProfileContactInfo: View{
         .onChange(of:marcaSelectType, perform:{ s in marcaSelectType = .profileStatusChoices })
     }
     
-    private func handleStatusSelectionChange(_ selection:[String:String]){
-        if let choiceCase = MarcaProfileStatusChoice(rawValue:selection["name"] ?? "") {
+    private func handleStatusSelectionChange(_ selection:String){
+        if let choiceCase = MarcaProfileStatusChoice(rawValue:selection) {
             print("ProfileContactInfo handleStatusSelectionChange statusSelection : \(choiceCase)")
             
             //copy values before resetting selection
@@ -307,16 +307,16 @@ struct NotesTitle: View{
 
 struct ProfileCatViewLink: View {
     @StateObject var model:_M = _M.M()
-    var profileGroupCategory:[String:String]
+    var profileGroupCategory:IdentifiableGroupCategories
 
     var body: some View {
-        if let range = profileGroupCategory["range"], let title = profileGroupCategory["title"]{
+        if let range = profileGroupCategory.range, let title = profileGroupCategory.title{
             
             VStack(alignment: .center, spacing: 0){
                 Spacer()
                 
-                List(model.profileGroupEmployees, id: \.self) { empDict in
-                    if let empId = empDict["id"], let empName = empDict["name"]  {
+                List(model.profileGroupEmployees) { emp in
+                    if let empId = emp.empId, let empName = emp.name  {
                         NavigationLink(empName, destination:ProfileSummaryView(empId:empId))
                             .padding(EdgeInsets(top:0, leading:4, bottom:0, trailing:0))
                             .onAppear(perform: { _D.print("Edit Profiles NavigationLink onAppear ") })
@@ -357,7 +357,7 @@ struct EditProfileViewProxy{
     
     public static func getProfileCatEmps(range:String, title:String){
         Task{
-            var catArr: [[String: String]] = _C.MPTY_STRDICT_ARRAY
+            var catArr: [IdentifiableGroupEmployees] = []
             print("making RESTRequest for profile group categories ... ")
             
             let request = RESTRequest(path:"/employees", queryParameters: ["cat":"PhotoNames", "value":"g", "range":range, "dept":"all", "title":title])
@@ -387,7 +387,7 @@ struct EditProfileViewProxy{
                                             }
                                             
                                             if let eid = empId, let en = empName {
-                                                catArr.append(["name":en, "id":eid])
+                                                catArr.append(IdentifiableGroupEmployees(name:en, empId:eid))
                                                 break
                                             }
                                         }
@@ -509,7 +509,7 @@ struct EditProfileViewProxy{
         return retStr ?? ""
     }
     
-    public static func handleProfileGroupEmpsUpdated(emps : [[String:String]])async{
+    public static func handleProfileGroupEmpsUpdated(emps : [IdentifiableGroupEmployees])async{
         await _M.updateProfileGroupEmployees(emps)
     }
 

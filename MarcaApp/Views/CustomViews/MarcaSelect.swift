@@ -11,7 +11,7 @@ import SwiftUI
 struct MarcaSelect: View{
     @StateObject var model:_M = _M.M()
     
-    @Binding var selection:[String:String]
+    @Binding var selection:String
     
     @Binding var marcaSelectType:MarcaSelectType
     @State var width:CGFloat
@@ -19,7 +19,7 @@ struct MarcaSelect: View{
     
     @State var key:String
     @State var tapCount:Int = 0
-    @State var choices:[[String:String]] = _C.MPTY_STRDICT_ARRAY
+    @State var choices:[String] = [_C.MPTY_STR]
     
     var imageWidth:CGFloat = 13
     var imageHeight:CGFloat = 13
@@ -32,8 +32,6 @@ struct MarcaSelect: View{
     @Binding var title:String
     @Binding var refreshChoiceCount:Int
     
-    let TAP_COUNT:String = "TAP_COUNT"
-    
     var body: some View{
         VStack(alignment: .center, spacing:0){
             Menu {
@@ -43,7 +41,7 @@ struct MarcaSelect: View{
                             // do something
                         } label: {
                             HStack(alignment:.center, spacing:0){
-                                Text(choice[key] ?? "")
+                                Text(choice)
                                     .onAppear(perform:handleTextViewAppeared)
                                     .onDisappear(perform:handleTextViewDisappeared)
                                 
@@ -107,7 +105,7 @@ struct MarcaSelect: View{
     /** ensures picker is refreshed - [] is problematic and ["String:String] may not be a change */
     func handleRefreshChoices(){
         print("refreshing choices ...")
-        selection = [TAP_COUNT:"\(tapCount)"]
+        selection = "TAP_COUNT:\(tapCount)"
         choices = [selection]
     }
     
@@ -138,11 +136,7 @@ struct MarcaSelect: View{
     }
 
     func populateChoices(){
-        choices = []
-        for rawVal in MarcaSelectType.getStrArr(marcaSelectType){
-            let choice = ["name":rawVal]
-            choices.append(choice)
-        }
+        choices = MarcaSelectType.getStrArr(marcaSelectType)
     }
     
     func handleTapOccurredChange(wasTapped:Bool, outsideTap:Bool){

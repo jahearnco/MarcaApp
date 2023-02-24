@@ -90,7 +90,7 @@ struct Title : View{
 struct ActionButton : View{
     @StateObject var model:_M = _M.M()
     
-    @State var preferenceSelection:[String:String] = _C.MPTY_STRDICT
+    @State var preferenceSelection:String = _C.MPTY_STR
     @State var refreshChoiceCount:Int = 0
     @State var menuTitle:String = ""
     @State var marcaSelectType:MarcaSelectType = .loginMenuChoices
@@ -147,7 +147,7 @@ struct ActionButton : View{
         return loggedIn ? Image(systemName: "slider.horizontal.3") : Image(systemName: "line.3.horizontal")
     }
     
-    private func handlePreferenceSelectionChange(_ selection:[String:String]){
+    private func handlePreferenceSelectionChange(_ selection:String){
         //menu has collapsed and now is time to delete choices in MarcaSelect
         refreshChoiceCount = refreshChoiceCount + 1
     }

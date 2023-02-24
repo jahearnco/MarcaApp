@@ -184,15 +184,15 @@ final class _M:MarcaClass,ObservableSingleton {
         M().cellPhoneDict = cellPhoneDict
     }
     
-    @Published var textGroupEmployees:[[String:String]] = _C.MPTY_STRDICT_ARRAY
+    @Published var textGroupEmployees:[IdentifiableGroupEmployees] = []
     @MainActor
-    public static func updateTextGroupEmps(_ textGroupEmployees:[[String:String]]){
+    public static func updateTextGroupEmps(_ textGroupEmployees:[IdentifiableGroupEmployees]){
         M().textGroupEmployees = textGroupEmployees
     }
     
-    @Published var profileGroupEmployees:[[String:String]] = _C.MPTY_STRDICT_ARRAY
+    @Published var profileGroupEmployees:[IdentifiableGroupEmployees] = []
     @MainActor
-    public static func updateProfileGroupEmployees(_ profileGroupEmployees:[[String:String]]){
+    public static func updateProfileGroupEmployees(_ profileGroupEmployees:[IdentifiableGroupEmployees]){
         M().profileGroupEmployees = profileGroupEmployees
     }
     
@@ -201,15 +201,31 @@ final class _M:MarcaClass,ObservableSingleton {
         M().overlayIsShowing = overlayIsShowing
     }
     
-    @Published var profileGroupCats:[[String:String]] = _C.MPTY_STRDICT_ARRAY
+    @Published var profileGroupCats:[IdentifiableGroupCategories] = _C.PROFILE_GROUP_CATEGORIES
     @MainActor
-    public static func setProfileGroupCats(_ profileGroupCats:[[String:String]]){
+    public static func setProfileGroupCats(_ profileGroupCats:[IdentifiableGroupCategories]){
         M().profileGroupCats = profileGroupCats
     }
 
-    @Published var textGroupCats:[[String:String]] = _C.TEXT_GROUP_CATEGORIES
+    @Published var textGroupCats:[IdentifiableGroupCategories] = _C.TEXT_GROUP_CATEGORIES
     @MainActor
-    public static func setTextGroupCats(_ textGroupCats:[[String:String]]){
+    public static func setTextGroupCats(_ textGroupCats:[IdentifiableGroupCategories]){
         M().textGroupCats = textGroupCats
     }
 }
+
+struct IdentifiableGroupCategories: Identifiable {
+    var id = UUID()
+    var name: String?// = _C.MPTY_STR
+    var range: String?// = _C.MPTY_STR
+    var title: String?// = _C.MPTY_STR
+    var role: String?// = _C.MPTY_STR
+}
+
+struct IdentifiableGroupEmployees: Identifiable {
+    var id = UUID()
+    var name: String?// = _C.MPTY_STR
+    var phone: String?// = _C.MPTY_STR
+    var empId: String?// = _C.MPTY_STR
+}
+
