@@ -22,16 +22,18 @@ MarcaApp is a limited feature app version of MARCA based on iOS Amplify-Swift li
 # ![Marca Banner](Assets.xcassets/smallestlogo.png) &nbsp; <a href="https://github.com/jahearnco/MarcaApp/tree/main/MarcaApp/Ancillary/Auth">Auth</a>
    <a href="https://github.com/jahearnco/MarcaApp/blob/main/MarcaApp/Ancillary/Auth/Cognito.swift">AWS Cognito</a><br/>
    <a href="https://github.com/jahearnco/MarcaApp/blob/main/MarcaApp/Ancillary/Auth/KeyChainProxy.swift">KeyChainProxy</a>
-# ![Marca Banner](Assets.xcassets/smallestlogo.png) &nbsp; <a href="https://github.com/jahearnco/MarcaApp/blob/main/MarcaApp/Ancillary/Constants/MarcaEnums.swift">Enums</a>
+# ![Marca Banner](Assets.xcassets/smallestlogo.png) &nbsp; <a href="https://github.com/jahearnco/MarcaApp/blob/main/MarcaApp/Ancillary/Crucible/MarcaEnums.swift">Enums</a>
     enum MarcaError: Error
-    enum MarcaViewChoice
     enum MarcaProfileTitle:String,CaseIterable
+    enum MarcaViewChoice
+    enum MarcaTitle
     enum MarcaLoginMenuChoice:String,CaseIterable
     enum MarcaCreateTextMenuChoice:String,CaseIterable
     enum MarcaEditProfilesMenuChoice:String,CaseIterable
     enum MarcaProfileStatusChoice:String,CaseIterable
     enum MarcaLogsViewMenuChoice:String,CaseIterable
     enum MarcaSelectType:String,CaseIterable
+    enum MarcaItemHashManager
 # ![Marca Banner](Assets.xcassets/smallestlogo.png) &nbsp; <a href="https://github.com/jahearnco/MarcaApp/blob/main/MarcaApp/Ancillary/Models/_M.swift">Model</a>
     @Published var cacheKiller:String
     @Published var isPortraitOrientation:Bool
