@@ -53,37 +53,29 @@ MarcaApp is a limited feature app version of MARCA based on iOS Amplify-Swift li
     extension CGFloat
     extension EdgeInsets
 # ![Marca Banner](Assets.xcassets/smallestlogo.png) &nbsp; <a href="https://github.com/jahearnco/MarcaApp/blob/main/MarcaApp/Ancillary/Models/_M.swift">Model</a>
-    @Published var cacheKiller:String
-    @Published var isPortraitOrientation:Bool
-    @Published var isLoginButtonPressed:Bool
-    @Published var headerHeight:CGFloat
-    @Published var footerHeight:CGFloat
-    @Published var menuDoesAppear:Bool
-    @Published var tapOccurred:Bool
+    @Published var cacheKiller:String = ""
+    @Published var isPortraitOrientation:Bool = true
+    @Published var isLoginButtonPressed:Bool = false
+    @Published var headerHeight:CGFloat = .headerHeightPortrait
+    @Published var footerHeight:CGFloat = 0
+    @Published var menuDoesAppear:Bool = false
+    @Published var tapOccurred:Bool = false
     @Published var fieldMaybeInFocus:Field?
-    @Published var inEditingMode:Bool
-    @Published var authDidFail:Bool
-    @Published var frameViewChoice:MarcaViewChoice
-    @Published var taskViewChoice:MarcaViewChoice
-    @Published var isLogoutChoiceButtonPressed:Bool
-    @Published var appFullScreenAspectRatio:CGFloat
-    @Published var appFullWidth:CGFloat
-    @Published var appFullHeight:CGFloat
-    @Published var isLoggingOut:Bool
-    @Published var isUserLoggedIn:Bool
-    @Published var currentViewTitle:String
-    @Published var loggedInUsername:String
-    @Published var profile:Profile
-    @Published var profileStaffNotes:[[String:String]]
+    @Published var inEditingMode:Bool = false
+    @Published var authDidFail:Bool = false
+    @Published var frameViewChoice:MarcaViewChoice = .noView
+    @Published var taskViewChoice:MarcaViewChoice = .noView
+    @Published var currentView:MarcaViewChoice = .noView
+    @Published var isLogoutChoiceButtonPressed:Bool = false
+    @Published var appFullScreenAspectRatio:CGFloat = 1
+    @Published var appFullWidth:CGFloat = 0
+    @Published var appFullHeight:CGFloat = 0
+    @Published var isLoggingOut:Bool = false
+    @Published var isUserLoggedIn:Bool = false
+    @Published var loggedInUsername:String = .emptyString
     @Published var user:User?
-    @Published var logs:[[String:String]]
-    @Published var communityLogs:[[String:String]]
-    @Published var profileHash:ContactInfoList?
-    //@Published var textingProfileHash:[IdentifiableGroupEmployees]
-    @Published var profileHash:[IdentifiableGroupEmployees]
-    @Published var overlayIsShowing:Bool
-    @Published var profileGroupCats:[WorkgroupCategory]
-    @Published var textingGroupCats:[WorkgroupCategory]
+    @Published var overlayIsShowing:Bool = false
+    @Published var communityLogs:[MarcaLogItem] = []
 # ![Marca Banner](Assets.xcassets/smallestlogo.png) &nbsp; <a href="https://github.com/jahearnco/MarcaApp/tree/main/MarcaApp/Ancillary/Factories">Factory</a>
     protocol Marca{}
     protocol Singleton{}
