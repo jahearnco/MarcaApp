@@ -10,17 +10,17 @@ import SwiftUI
 struct MarcaLogView: View{
     @StateObject var model:_M = _M.M()
 
-    @State var logDict:[String:String]
+    @State var logItem:MarcaLogItem
     
-    var bgColor:Color = _C.marcaLightGray
+    var bgColor:Color = .marcaLightGray
     var bodyHeight:CGFloat = 86
     var outerMarginWidth:CGFloat = 16
 
     var body: some View{
         VStack(alignment:.center, spacing:0){
             VStack(alignment:.center, spacing:0){
-                LogTitle(logDict:logDict)
-                LogBody(logDict:logDict, height:bodyHeight)
+                LogTitle(logItem:logItem)
+                LogBody(logItem:logItem, height:bodyHeight)
             }
             .padding(.bottom,10)
             .padding([.top,.leading,.trailing], 0)
@@ -34,26 +34,27 @@ struct MarcaLogView: View{
         .border(Color.red, width:_D.flt(1))
         .background(bgColor)
         .listRowSeparator(.hidden)
+        .onAppear(perform:{_D.dPrint("MarcaLogView onAppear")})
     }
 }
 
 struct LogTitle: View{
-    @State var logDict:[String:String] = _C.MPTY_STRDICT
+    @State var logItem:MarcaLogItem
     
     var body: some View {
         HStack (alignment: .top){
             VStack(alignment:.leading, spacing:0){
-                if let title = logDict["title"], title.count > 0{
+                if let title = logItem.title, title.count > 0{
                     Text(title)
-                        .foregroundColor(_C.marcaGray)
+                        .foregroundColor(.marcaGray)
                         .font(.custom("verdana", size:10))
                         .fontWeight(.semibold)
                         .padding(0)
                 }
 
-                if let dateStr = logDict["profileNoteDateStr"], dateStr.count > 0 {
-                    Text(LogsViewProxy.formatTitleDate(dateStr:dateStr))
-                        .foregroundColor(_C.marcaDarkGray)
+                if let dateStr = logItem.createDateStr, dateStr.count > 0 {
+                    Text(MarcaLogViewProxy.formatTitleDate(dateStr:dateStr))
+                        .foregroundColor(.marcaDarkGray)
                         .font(.custom("consolas", size:12))
                         .fontWeight(.regular)
                         .padding(0)
@@ -65,17 +66,17 @@ struct LogTitle: View{
             Spacer()
             
             VStack(alignment:.trailing, spacing:0){
-                if let auth = logDict["auth"], auth.count > 0 {
-                    Text(CognitoProxy.getUserFirstNameLastI(fullName:auth) ?? _C.MPTY_STR)
-                        .foregroundColor(_C.marcaGray)
+                if let auth = logItem.auth, auth.count > 0 {
+                    Text(CognitoProxy.getUserFirstNameLastI(fullName:auth) ?? .emptyString)
+                        .foregroundColor(.marcaGray)
                         .font(.custom("verdana", size:10))
                         .fontWeight(.semibold)
                         .padding(0)
                 }
                 
-                if let dateStr = logDict["logDateStr"], dateStr.count > 0 {
-                    Text(LogsViewProxy.formatTitleDate(dateStr:dateStr))
-                        .foregroundColor(_C.marcaDarkGray)
+                if let dateStr = logItem.createDateStr, dateStr.count > 0 {
+                    Text(MarcaLogViewProxy.formatTitleDate(dateStr:dateStr))
+                        .foregroundColor(.marcaDarkGray)
                         .font(.custom("consolas", size:12))
                         .fontWeight(.regular)
                         .padding(0)
@@ -89,13 +90,14 @@ struct LogTitle: View{
         .padding(.bottom, 0)
         .padding([.leading,.trailing], 10)
         .border(Color.red, width:_D.flt(1))
+        .onAppear(perform:{_D.dPrint("LogTitle onAppear")})
     }
 }
 
 struct LogBody: View{
     @StateObject var model:_M = _M.M()
     
-    @State var logDict:[String:String] = _C.MPTY_STRDICT
+    @State var logItem:MarcaLogItem
     @State var height:CGFloat
     
     var body: some View {
@@ -106,7 +108,7 @@ struct LogBody: View{
             
             ScrollView{
                 HStack(alignment:.top){
-                    if let desc = logDict["desc"] {
+                    if let desc = logItem.desc {
                         Text(desc)
                             .padding(5)
                             .border(Color.black, width:_D.flt(1))
@@ -115,7 +117,7 @@ struct LogBody: View{
                     
                     Spacer()
                     
-                    if let descNote = logDict["descNote"] {
+                    if let descNote = logItem.descNote {
                         Text(descNote)
                             .padding([.top,.bottom,.trailing],5)
                             .padding(.leading, 0)
@@ -133,10 +135,10 @@ struct LogBody: View{
             .font(.custom("helvetica", size:13))
             .border(Color.red, width:_D.flt(1))
             .frame(height:height)
-            .background(_C.marcaLightGray.opacity(0.4))
+            .background(Color.marcaLightGray.opacity(0.4))
             .overlay(
                 RoundedRectangle(cornerRadius: 4)
-                    .stroke(_C.deepBlueViolet.opacity(0.6), lineWidth:2)
+                    .stroke(Color.deepBlueViolet.opacity(0.6), lineWidth:2)
                     .shadow(color: .gray, radius:1.5, x: 1.5, y:1.5)
             )
 
@@ -148,8 +150,7 @@ struct LogBody: View{
         .padding(.bottom, 4)
         .padding([.leading,.trailing], 9)
         .border(Color.green, width:_D.flt(1))
-        .onAppear(perform: { _D.print("LogBody onAppear logDict:\(String(describing: logDict))"); } )
-        .onChange(of:logDict, perform: { dict in _D.print("LogBody onChange logDict:\(String(describing: dict))"); } )
+        .onAppear(perform:{_D.dPrint("LogBody onAppear")})
     }
     
     struct LeftArrow: View{
@@ -157,8 +158,7 @@ struct LogBody: View{
             Image(systemName: "arrowtriangle.right.fill")
                 .resizable()
                 .frame(width:12.0, height:24.0)
-                .foregroundColor(_C.blueVioletFuchsia.opacity(0.8))
-                //.foregroundColor(_C.deepBlueViolet.opacity(0.5))
+                .foregroundColor(.blueVioletFuchsia.opacity(0.8))
                 .padding(0)
         }
     }
@@ -168,10 +168,23 @@ struct LogBody: View{
             Image(systemName: "arrowtriangle.left.fill")
                 .resizable()
                 .frame(width:12.0, height:24.0)
-                .foregroundColor(_C.blueVioletFuchsia.opacity(0.8))
-                //.foregroundColor(_C.deepBlueViolet.opacity(0.5))
+                .foregroundColor(.blueVioletFuchsia.opacity(0.8))
                 .padding(0)
         }
     }
 
+}
+
+struct MarcaLogViewProxy:MarcaViewProxy{
+    public static func handleOnViewAppear(_ model:_M?=nil, geometrySize:CGSize?=nil, items:any MarcaItem...) {
+
+    }
+
+    public static func handleOnViewDisappear(){
+
+    }
+    
+    public static func formatTitleDate(dateStr:String)->String{
+        return dateStr
+    }
 }

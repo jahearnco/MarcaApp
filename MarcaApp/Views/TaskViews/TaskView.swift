@@ -9,8 +9,7 @@ import SwiftUI
 
 struct TaskView: View {
     @StateObject var model:_M = _M.M()
-    @State var inEditingMode:Bool = false
-    
+
     var body: some View {
         ZStack{
             VStack(alignment:.center, spacing:0) {
@@ -41,19 +40,20 @@ struct TaskView: View {
             .animation(.default, value:model.taskViewChoice)
             
             ProgressView()
-                .opacity(model.isLoggingOut || model.loggedInUsername == _C.MPTY_STR ? 1 : 0)
+                .opacity(model.isLoggingOut || model.loggedInUsername == .emptyString ? 1 : 0)
         }
         .padding(0)
         .border(Color.green, width:_D.flt(1))
-        .onAppear(perform: TaskViewProxy.handleOnTaskViewAppear)
+        .onAppear(perform: { TaskViewProxy.handleOnViewAppear() })
     }
 }
 
-struct TaskViewProxy{
-    public static func handleOnTaskViewAppear(){
-        Task{
-            await _M.updateTextGroupEmps([])
-            await _M.updateCellPhoneDict(_C.MPTY_STRDICT)
-        }
+struct TaskViewProxy:MarcaViewProxy{
+    static func handleOnViewAppear(_ model:_M?=nil, geometrySize:CGSize?=nil, items:any MarcaItem...) {
+        
+    }
+    
+    static func handleOnViewDisappear() {
+        
     }
 }

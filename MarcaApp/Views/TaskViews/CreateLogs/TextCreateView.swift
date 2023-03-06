@@ -9,177 +9,186 @@
 //  struct TextCreateFields: View
 //  struct CheckboxFieldView: View
 //  struct TextCreateViewProxy: View
-//
+
 import Amplify
 import AWSAPIPlugin
 import SwiftUI
 
 struct TextCreateView: View {
-    @Environment(\.dismiss) var dismiss
     @StateObject var model:_M = _M.M()
     
-    @State var textTitle:String = _C.MPTY_STR
-    @State var textBody:String = _C.MPTY_STR
+    @State var textTitle:String = ""
+    @State var textBody:String = ""
+    @State var selectedProfileHash:[String:Profile] = [String:Profile]()
 
     var body: some View {
         VStack(alignment: .center, spacing: 0){
             NavigationView {
-                List(model.textGroupCats) { cat in
-                    if let catName:String = cat.name  {
-                        NavigationLink(catName, destination:TextCatViewLink(textGroupCategory:cat))
-                            .padding(EdgeInsets(top:0, leading:4, bottom:0, trailing:0))
-                            .onAppear(perform: { print("NavigationLink onAppear ")})
-                            .task{ print("NavigationLink task ") }
+                List{
+                    ForEach(WorkgroupCategory.textingWorkgroupCategories) { cat in
+                        NavigationLink(cat.itemId, destination:TextCatViewLink(title:cat.title, role:cat.role, selectedProfileHash:$selectedProfileHash))
+                             .padding(EdgeInsets(top:0, leading:4, bottom:0, trailing:0))
                     }
                 }
                 .padding(0)
                 .font(.custom("verdana", size: 12))
                 .fontWeight(.bold)
                 .listStyle(.plain)
-                .navigationBarTitle(_C.MPTY_STR, displayMode: .inline)
+                .navigationBarTitle("", displayMode: .inline)
             }
             .padding(.top, 10)//for some odd reason 0 does not work at all - the view moves to the top of the safeArea!
-            .accentColor(_C.marcaGray)
+            .accentColor(Color.marcaGray)
             .fontWeight(.bold)
             .navigationViewStyle(.stack)
             .border(Color.black, width:_D.flt(1))
 
-            TextCreateFields(textTitle:$textTitle, textBody:$textBody)
+            TextCreateFields(textTitle:$textTitle, textBody:$textBody, selectedProfileHash:$selectedProfileHash)
         }
         .padding(0)
         .opacity(model.menuDoesAppear ? 0.2 : 1)
-        .onAppear(perform:TextCreateViewProxy.handleOnTextCreateViewAppear)
-        .onChange(of:model.taskViewChoice, perform:{ tvc in
-            if tvc != .textCreateView  { dismiss() }
-        })
-    }
-}
-
-struct TextCatViewLink: View {
-    @StateObject var model:_M = _M.M()
-    var textGroupCategory:IdentifiableGroupCategories
-    
-    var body: some View {
-        if let title = textGroupCategory.title, let role = textGroupCategory.role{
-            VStack(alignment: .center, spacing: 0){
-                List(model.textGroupEmployees) { emp in
-                    VStack(alignment: .center, spacing: 0){
-                        if let phone = emp.phone {
-                            if let empName = emp.name {
-                                CheckboxFieldView(empName:empName, phone:phone)
-                            }
-                        }
-                    }
-                    .padding(EdgeInsets(top:0, leading: 0, bottom: 0, trailing: 0))
-                }
-                .padding(EdgeInsets(top:8, leading: 0, bottom:0, trailing: 0))
-                .border(Color.black, width:_D.flt(0))
-                .listStyle(PlainListStyle())
-                
-            }
-            .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
-            .onAppear( perform:
-                        {
-                Task{
-                    await TextCreateViewProxy.getTextingCatEmps(title:title, role:role)
-                    print("CatViewLink title = \(title) .onAppear called")
-                }
-            })
-            .onDisappear( perform:
-                            {
-                print("CatViewLink title = \(title) .onDisAppear called")
-            })
-        }
+        .onAppear(perform: { TextCreateViewProxy.handleOnViewAppear() })
+        .onDisappear(perform: { _D.dPrint("TextCreateView disappeared") })
     }
 }
 
 struct TextCreateFields: View {
     @StateObject var model:_M = _M.M()
-    @FocusState private var maybeFocusedField:Field?
+    @FocusState private var focusedField: TextCreateFields.Field?
     
     @Binding var textTitle:String
     @Binding var textBody:String
+    @Binding var selectedProfileHash:[String:Profile]
     
-    let titleField = "Input Title"
-    let bodyField = "Input Text"
+    @State var titleField:String = "Input Title"
+    @State var bodyField:String = "Input Text"
 
     var body: some View {
         
         VStack(alignment:.center, spacing:0){
             MarcaTextField(text:$textTitle, fieldName:titleField)
-            MarcaTextField(text:$textBody, fieldName:bodyField, lineLimit:3...6)
-            MarcaButton(action:createAndSendText, textBody:"Send Text", type:_C.BUTTON_SUBMIT, disabled:disableButton())
+                .focused($focusedField, equals: .inputTitleField)
+            
+            MarcaTextField(text:$textBody, fieldName:bodyField, lineLimit:3...6, submitAction:doSubmit)
+                .focused($focusedField, equals: .inputBodyField)
+            
+            MarcaButton(action:doSubmit, textBody:"Send Text", type:.buttonSubmit, disabled:disableButton())
+            
         }
-        .padding([.leading, .trailing],10)
+        .submitScope(true)
+        .padding([.leading, .trailing], 5)
+        .onDisappear(perform: { _D.dPrint("TextCreateFields disappeared") })
+        .toolbar {
+            ToolbarItem(placement: .keyboard) {
+                Spacer().frame(width:model.appFullWidth - 100)
+            }
+            ToolbarItem(placement: .keyboard) {
+                Button(action: focusPreviousField) {
+                    Image(systemName: "chevron.up")
+                }
+                .disabled(!canFocusPreviousField()) // remove this to loop through fields
+                .padding(.trailing,10)
+            }
+            ToolbarItem(placement: .keyboard) {
+                Button(action: focusNextField) {
+                    Image(systemName: "chevron.down")
+                }
+                .disabled(!canFocusNextField()) // remove this to loop through fields
+            }
+        }
     }
     
     private func disableButton()->Bool{
-        return model.cellPhoneDict == _C.MPTY_STRDICT || textTitle == _C.MPTY_STR || textBody == _C.MPTY_STR
+        return selectedProfileHash.count == 0 || textTitle == .emptyString || textBody == .emptyString
     }
     
-    private func createAndSendText(){
-        var numList:String = _C.MPTY_STR
-        var sep = _C.MPTY_STR
-        let pipesep = "|"
-        for (k, v) in model.cellPhoneDict {
-            numList += "\(sep)\(k) @ \(v)"
-            if (sep == _C.MPTY_STR) { sep = pipesep }
-        }
-        print("textTitle: \(textTitle), textBody: \(textBody)")
-        print("numList : \(numList)")
-        
-        let authorInfo = "Ahearn, John @ 5102958024"
-        let cellInfoList = "\(authorInfo)|\(numList)"
-        print("cellInfoList = \(cellInfoList)")
-
-        Task{
-            let createSucceeded = await TextCreateViewProxy.submitTextForSend(title:textTitle, body:textBody, cellInfoList:cellInfoList)
-            await handleTextCreate(success:createSucceeded)
-        }
-    }
-    
-    private func handleTextCreate(success:Bool) async{
-        textTitle = _C.MPTY_STR
-        textBody = _C.MPTY_STR
-        await TextCreateViewProxy.handleTextCreated(success:success)
+    public func doSubmit(){
+        TextCreateViewProxy.createAndSendText(selectedProfileHash:selectedProfileHash, user:model.user, title:textTitle, body:textBody)
     }
 }
 
+extension TextCreateFields {
+    /*
+     move all this to MarcaTextField
+     idea should be that @FocusState uses this enum throughout the app for field
+     then you can see which actuial field has focus, and maybe control nil values as well?
+     */
+    
+    private enum Field: Int, CaseIterable {
+        case inputTitleField
+        case inputBodyField
+    }
+    
+    private func focusPreviousField() {
+        focusedField = focusedField.map {
+            Field(rawValue: $0.rawValue - 1) ?? .inputTitleField
+        }
+    }
+
+    private func focusNextField() {
+        focusedField = focusedField.map {
+            Field(rawValue: $0.rawValue + 1) ?? .inputBodyField
+        }
+    }
+    
+    private func canFocusPreviousField() -> Bool {
+        guard let currentFocusedField = focusedField else {
+            return false
+        }
+        return currentFocusedField.rawValue > 0
+    }
+
+    private func canFocusNextField() -> Bool {
+        guard let currentFocusedField = focusedField else {
+            return false
+        }
+        return currentFocusedField.rawValue < Field.allCases.count - 1
+    }
+}
+
+/*
+ struct ContentView: View {
+     @Environment(\.firstResponder) private var firstResponder: ObjectIdentifier
+     @State var text1: String = ""
+     @State var text2: String = ""
+     var body: some View {
+         VStack {
+             TextField("...", text: self.$text1)
+                 .id("TF1")
+             TextField("...", text: self.$text2)
+                 .id("TF2")
+             HStack {
+                 Button("Focus 1") {
+                     self.firstResponder = "TF1"
+                 }
+                 Button("Focus 2") {
+                     self.firstResponder = "TF2"
+                 }
+             }
+         }
+     }
+ }
+ */
 struct CheckboxFieldView: View {
     @StateObject var model:_M = _M.M()
     @State var checkState: Bool = false
-
-    var empName:String?
-    var phone:String?
+    @State var profile:Profile?
+    @Binding var selectedProfileHash:[String:Profile]
     
     var body: some View {
         Button(action:
         {
-            self.checkState = !self.checkState
-            print("State : \(self.checkState)")
-            
-            if let p = phone{
-                if let e = empName{
-                    print("numList initializing model.cellPhoneDict")
-                    model.cellPhoneDict[e] = self.checkState ? p : nil
-                }
-            }
+            handleCheckboxPressAction()
         })
         {
             HStack(alignment: .top, spacing: 10) {
-                Rectangle()
-                    .fill(self.checkState ? _C.marcaGreen : _C.marcaGray)
-                    .frame(width:15, height:15, alignment: .center)
-                    .cornerRadius(5)
-                    .padding(EdgeInsets(top:2, leading:0, bottom:0, trailing:0))
-                    .onAppear( perform:
-                    {
-                        if let name = empName {
-                            self.checkState = model.cellPhoneDict[name] != nil
-                        }
-                    })
-
-                if let name = empName {
+                if let name = profile?.name {
+                    Rectangle()
+                        .fill(self.checkState ? Color.marcaGreen : Color.marcaGray)
+                        .frame(width:15, height:15, alignment: .center)
+                        .cornerRadius(5)
+                        .padding(EdgeInsets(top:2, leading:0, bottom:0, trailing:0))
+                        .onAppear( perform:{ handleCheckboxOnAppear(name) })
+                    
                     Text(name)
                         .font(.custom("helvetica", size:13))
                         .padding(EdgeInsets(top:0, leading:0, bottom:2, trailing:0))
@@ -187,24 +196,113 @@ struct CheckboxFieldView: View {
             }
         }
         .foregroundColor(Color.black)
+        .onDisappear(perform: { _D.dPrint("CheckboxFieldView disappeared") })
     }
     
-}
-
-struct TextCreateViewProxy{
-    static private var model:_M = _M.M()
-    
-    public static func handleTextCreated(success:Bool) async{
-        if(success){
-            await _M.setTaskViewChoice(.logsView) //change view before Logs update
-            await LogsViewProxy.getLogs()
+    private func handleCheckboxPressAction(){
+        self.checkState = !self.checkState
+        print("State : \(self.checkState)")
+        
+        if let key = profile?.name{
+            if self.checkState && !isProfileSelected(key){
+                selectedProfileHash[key] = profile
+            }else if isProfileSelected(key){
+                selectedProfileHash.removeValue(forKey:key)
+            }
         }
     }
     
-    public static func submitTextForSend(title:String, body:String, cellInfoList:String) async -> Bool{
+    private func handleCheckboxOnAppear(_ key:String?){
+        self.checkState = isProfileSelected(key)
+    }
+    
+    private func isProfileSelected(_ key:String?)->Bool{
+        var retVal = false
+        do{
+            retVal = try MarcaItemHashManager.exists(selectedProfileHash, key)
+        }catch{
+            print(error)
+        }
+        return retVal
+    }
+}
+
+struct TextCatViewLink: View {
+    @StateObject var model:_M = _M.M()
+    @State var title:String?
+    @State var role:String?
+    @Binding var selectedProfileHash:[String:Profile]
+    @State var profileGroupList:[Profile] = []
+    
+    var body: some View {
+        VStack(alignment: .center, spacing: 0){
+            List{
+                ForEach(profileGroupList) { profile in
+                    VStack(alignment: .center, spacing: 0){
+                        CheckboxFieldView(profile:profile, selectedProfileHash:$selectedProfileHash)
+                    }
+                    .padding(EdgeInsets(top:0, leading: 0, bottom: 0, trailing: 0))
+                    .onDisappear(perform: { _D.dPrint("TextCatViewLinkVStack disappeared") })
+                }
+            }
+            .padding(EdgeInsets(top:8, leading: 0, bottom:0, trailing: 0))
+            .border(Color.black, width:_D.flt(0))
+            .listStyle(PlainListStyle())
+            .onDisappear(perform: { _D.dPrint("TextCatViewLinkList disappeared") })
+        }
+        .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+        .onAppear(perform: { Task{ profileGroupList = await TextCreateViewProxy.handleOnTextCatViewLinkAppear(title:title, role:role) } })
+        .onDisappear(perform: { _D.dPrint("TextCatViewLink disappeared") })
+    }
+}
+
+struct TextCreateViewProxy:MarcaViewProxy{
+    public static func handleOnViewDisappear(){
+        //dismiss()
+    }
+    
+    static func handleOnViewAppear(_ model:_M?=nil, geometrySize:CGSize?=nil, items:any MarcaItem...) {
+        _D.dPrint("TextCreateView onAppear")
+    }
+    
+    static func createAndSendText(selectedProfileHash:[String:Profile], user:User?, title:String, body:String){
+        Task{
+            let createSucceeded = await submitTextForSend(selectedProfileHash:selectedProfileHash, user:user, title:title, body:body)
+            if(createSucceeded){
+                await _M.setTaskViewChoice(.logsView)
+            }
+        }
+    }
+    
+    static func handleOnTextCatViewLinkAppear(title:String?, role:String?)async->[Profile]{
+        var retArr:[Profile] = []
+        if let title = title, let role = role{
+            retArr = await TextCreateViewProxy.getTextingProfileGroupList(title:title, role:role)
+            _D.dPrint("CatViewLink title = \(title) .onAppear called")
+        }
+        return retArr
+    }
+    
+    public static func submitTextForSend(selectedProfileHash:[String:Profile], user:User?, title:String, body:String) async -> Bool{
+        //user:model.user, title:textTitle, body:textBody, cellInfoList:cellInfoList
+        //print("selectedProfileHash : \(selectedProfileHash)")
+        var numList:String = .emptyString
+        var sep = String.emptyString
+        let pipesep = "|"
+        for (name, profile) in selectedProfileHash {
+            numList += "\(sep)\(name) @ \(profile.phone)"
+            if (sep == .emptyString) { sep = pipesep }
+        }
+        //print("numList : \(numList)")
+        
+        let authorInfo = "Ahearn, John @ 510-295-8024"
+        let cellInfoList = "\(authorInfo)|\(numList)"
+        _D.dPrint("cellInfoList = \(cellInfoList)")
+
         var textCreateSuccess = false
         let date = NSDate()
         let millis:String = String(Int64(date.timeIntervalSince1970 * 1000.0))
+        let fullName = user?.fullName ?? .emptyString
         
         let body = [
             "workLogOpWorkLogId":millis,
@@ -213,10 +311,10 @@ struct TextCreateViewProxy{
             "workLogSeverity":"text",
             "workLogShift":"PM",
             "workLogTitle":title,
-            "workLogAuthor":model.user?.fullName ?? _C.MPTY_STR,
+            "workLogAuthor":fullName,
             "workLogDesc":body,
             "workLogCellInfo":cellInfoList,
-            "workLogLastDesc":_C.MPTY_STR,
+            "workLogLastDesc":.emptyString,
             "workLogReadOnly":"false",
             "workLogWorkGroup":"64",
             "employeeRoleId":"S",
@@ -255,8 +353,8 @@ struct TextCreateViewProxy{
         return textCreateSuccess
     }
     
-    public static func getTextingCatEmps(title:String, role:String) async{
-        var catArr: [IdentifiableGroupEmployees] = []
+    public static func getTextingProfileGroupList(title:String, role:String) async ->[Profile]{
+        var profileGroupList:[Profile] = []
         print("making RESTRequest for texting group categories ... ")
         
         //https://gely35v1j1.execute-api.us-west-2.amazonaws.com/prod/employees?cat=TimeStation&value=S&dept=all&title=on_site_admin
@@ -273,24 +371,26 @@ struct TextCreateViewProxy{
                     
                     print("textCats.count = \(textCats.count)")
                     
-                    let doAppend = true
                     /*DEMO ONLY
                     var prevLastinitial:String = ""
                     var lastinitial:String = "A"
                     var lastinitialCount:Int = 0
                     let lastinitialCountMax:Int = 3
                      */
-                    catArr = []
                     for tCat:Any in textCats {
                         var contactInfo:String?
                         var phone:String?
                         var empName:String?
+                        var itemId:String?
                         if let tCatD = tCat as? NSDictionary{
                             for (key,val) in tCatD{
                                 if let keyStr = key as? NSString{
                                     if let val = val as? String {
                                         
-                                        if (keyStr == "contactInfo"){
+                                        if (keyStr == "employeeId"){
+                                            itemId = val
+                                            
+                                        }else if (keyStr == "contactInfo"){
                                             contactInfo = val
                                             if let contactInfoArr = contactInfo?.components(separatedBy: "^~`"){
                                                 if (contactInfoArr.count > 0){
@@ -319,11 +419,8 @@ struct TextCreateViewProxy{
                                              */
                                         }
                                         
-                                        if (phone != nil && empName != nil){
-                                            let empContactDict:IdentifiableGroupEmployees = IdentifiableGroupEmployees(name: empName! ,phone:phone!)
-                                            if doAppend {
-                                                catArr.append(empContactDict)
-                                            }
+                                        if let phone = phone, let empName = empName, let itemId = itemId{
+                                            profileGroupList.append(Profile(itemId:itemId, name: empName, phone:phone))
                                             break
                                         }
                                     }
@@ -334,22 +431,59 @@ struct TextCreateViewProxy{
                     
                 }
             }
-            print("getTextingCatEmps calling handleTextGroupEmpsUpdated ...")
-            await handleTextGroupEmpsUpdated(emps:catArr)
-            
         }catch{
             print(error)
         }
+        return profileGroupList
     }
-    
-    public static func handleTextGroupEmpsUpdated(emps : [IdentifiableGroupEmployees])async{
-        await _M.updateTextGroupEmps(emps)
+}
+
+extension View {
+    /// Focuses next field in sequence, from the given `FocusState`.
+    /// Requires a currently active focus state and a next field available in the sequence.
+    ///
+    /// Example usage:
+    /// ```
+    /// .onSubmit { self.focusNextField($focusedField) }
+    /// ```
+    /// Given that `focusField` is an enum that represents the focusable fields. For example:
+    /// ```
+    /// @FocusState private var focusedField: Field?
+    /// enum Field: Int, Hashable {
+    ///    case name
+    ///    case country
+    ///    case city
+    /// }
+    /// ```
+    func focusNextField<F: RawRepresentable>(_ field: FocusState<F?>.Binding) where F.RawValue == Int {
+        guard let currentValue = field.wrappedValue else { return }
+        let nextValue = currentValue.rawValue + 1
+        if let newValue = F.init(rawValue: nextValue) {
+            field.wrappedValue = newValue
+        }
     }
-    
-    public static func handleOnTextCreateViewAppear(){
-        Task{
-            await _M.setCurrentViewTitle("Send Group Text")
-            await _M.updateCellPhoneDict(_C.MPTY_STRDICT)
+
+    /// Focuses previous field in sequence, from the given `FocusState`.
+    /// Requires a currently active focus state and a previous field available in the sequence.
+    ///
+    /// Example usage:
+    /// ```
+    /// .onSubmit { self.focusNextField($focusedField) }
+    /// ```
+    /// Given that `focusField` is an enum that represents the focusable fields. For example:
+    /// ```
+    /// @FocusState private var focusedField: Field?
+    /// enum Field: Int, Hashable {
+    ///    case name
+    ///    case country
+    ///    case city
+    /// }
+    /// ```
+    func focusPreviousField<F: RawRepresentable>(_ field: FocusState<F?>.Binding) where F.RawValue == Int {
+        guard let currentValue = field.wrappedValue else { return }
+        let nextValue = currentValue.rawValue - 1
+        if let newValue = F.init(rawValue: nextValue) {
+            field.wrappedValue = newValue
         }
     }
 }

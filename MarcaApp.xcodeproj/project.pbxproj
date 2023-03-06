@@ -13,8 +13,6 @@
 		078523DB29767CE4003FDB12 /* Cognito.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078523C229767CDE003FDB12 /* Cognito.swift */; };
 		078523DD29767CE4003FDB12 /* ContentViewParent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078523C429767CDF003FDB12 /* ContentViewParent.swift */; };
 		078523E429767CE5003FDB12 /* MarcaClassFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078523CF29767CE1003FDB12 /* MarcaClassFactory.swift */; };
-		078523E529767CE5003FDB12 /* _C.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078523D029767CE2003FDB12 /* _C.swift */; };
-		078523E629767CE5003FDB12 /* MarcaError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078523D229767CE2003FDB12 /* MarcaError.swift */; };
 		078523E729767CE5003FDB12 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078523D429767CE3003FDB12 /* LoginView.swift */; };
 		078523E929767CE5003FDB12 /* _M.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078523D729767CE4003FDB12 /* _M.swift */; };
 		078523F229767D90003FDB12 /* AWSAPIPlugin in Frameworks */ = {isa = PBXBuildFile; productRef = 078523F129767D90003FDB12 /* AWSAPIPlugin */; };
@@ -40,6 +38,9 @@
 		079849DE29935D6200F3E9DD /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 079849DD29935D6100F3E9DD /* EditProfileView.swift */; };
 		07BCB24A299B59BA007E0CAC /* MarcaLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07BCB249299B59BA007E0CAC /* MarcaLogView.swift */; };
 		07BCB24C299C45DC007E0CAC /* MarcaSelect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07BCB24B299C45DB007E0CAC /* MarcaSelect.swift */; };
+		07CD065929B3D58E00D32283 /* MarcaProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CD065829B3D58E00D32283 /* MarcaProtocols.swift */; };
+		07CD065B29B3D5EC00D32283 /* MarcaStructs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CD065A29B3D5EC00D32283 /* MarcaStructs.swift */; };
+		07CD065D29B3E87000D32283 /* MarcaExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07CD065C29B3E87000D32283 /* MarcaExtensions.swift */; };
 		07E3A3672975D0AA00D53F12 /* MarcaAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E3A3662975D0AA00D53F12 /* MarcaAppApp.swift */; };
 		07E3A36B2975D0B400D53F12 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 07E3A36A2975D0B400D53F12 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
@@ -51,8 +52,6 @@
 		078523C229767CDE003FDB12 /* Cognito.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cognito.swift; sourceTree = "<group>"; };
 		078523C429767CDF003FDB12 /* ContentViewParent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentViewParent.swift; sourceTree = "<group>"; };
 		078523CF29767CE1003FDB12 /* MarcaClassFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarcaClassFactory.swift; sourceTree = "<group>"; };
-		078523D029767CE2003FDB12 /* _C.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = _C.swift; sourceTree = "<group>"; };
-		078523D229767CE2003FDB12 /* MarcaError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarcaError.swift; sourceTree = "<group>"; };
 		078523D429767CE3003FDB12 /* LoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		078523D729767CE4003FDB12 /* _M.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = _M.swift; sourceTree = "<group>"; };
 		0785240129767FA2003FDB12 /* awsconfiguration.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = awsconfiguration.json; sourceTree = "<group>"; };
@@ -71,6 +70,9 @@
 		07AEFE8F2985D61B00509471 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		07BCB249299B59BA007E0CAC /* MarcaLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarcaLogView.swift; sourceTree = "<group>"; };
 		07BCB24B299C45DB007E0CAC /* MarcaSelect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarcaSelect.swift; sourceTree = "<group>"; };
+		07CD065829B3D58E00D32283 /* MarcaProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarcaProtocols.swift; sourceTree = "<group>"; };
+		07CD065A29B3D5EC00D32283 /* MarcaStructs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarcaStructs.swift; sourceTree = "<group>"; };
+		07CD065C29B3E87000D32283 /* MarcaExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarcaExtensions.swift; sourceTree = "<group>"; };
 		07E3A3632975D0AA00D53F12 /* MarcaApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MarcaApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		07E3A3662975D0AA00D53F12 /* MarcaAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarcaAppApp.swift; sourceTree = "<group>"; };
 		07E3A36A2975D0B400D53F12 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -95,20 +97,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		078523CE29767CE1003FDB12 /* Factories */ = {
+		078523CE29767CE1003FDB12 /* Crucible */ = {
 			isa = PBXGroup;
 			children = (
 				078523CF29767CE1003FDB12 /* MarcaClassFactory.swift */,
+				075C1E0629A48F0100C9268B /* MarcaEnums.swift */,
+				07CD065829B3D58E00D32283 /* MarcaProtocols.swift */,
+				07CD065A29B3D5EC00D32283 /* MarcaStructs.swift */,
+				07CD065C29B3E87000D32283 /* MarcaExtensions.swift */,
 			);
-			path = Factories;
-			sourceTree = "<group>";
-		};
-		078523D129767CE2003FDB12 /* Errors */ = {
-			isa = PBXGroup;
-			children = (
-				078523D229767CE2003FDB12 /* MarcaError.swift */,
-			);
-			path = Errors;
+			path = Crucible;
 			sourceTree = "<group>";
 		};
 		078523D329767CE3003FDB12 /* Auth */ = {
@@ -163,23 +161,12 @@
 			path = Debug;
 			sourceTree = "<group>";
 		};
-		079849CF298ECE7800F3E9DD /* Constants */ = {
-			isa = PBXGroup;
-			children = (
-				075C1E0629A48F0100C9268B /* MarcaEnums.swift */,
-				078523D029767CE2003FDB12 /* _C.swift */,
-			);
-			path = Constants;
-			sourceTree = "<group>";
-		};
 		079849D229907C0700F3E9DD /* Ancillary */ = {
 			isa = PBXGroup;
 			children = (
 				078523D329767CE3003FDB12 /* Auth */,
-				079849CF298ECE7800F3E9DD /* Constants */,
 				079849CC298DDF1300F3E9DD /* Debug */,
-				078523D129767CE2003FDB12 /* Errors */,
-				078523CE29767CE1003FDB12 /* Factories */,
+				078523CE29767CE1003FDB12 /* Crucible */,
 				078523D629767CE4003FDB12 /* Models */,
 			);
 			path = Ancillary;
@@ -376,10 +363,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				0785240C297909FE003FDB12 /* TextCreateView.swift in Sources */,
+				07CD065929B3D58E00D32283 /* MarcaProtocols.swift in Sources */,
 				078523E429767CE5003FDB12 /* MarcaClassFactory.swift in Sources */,
 				0785241429790AEF003FDB12 /* ContentView.swift in Sources */,
 				078523E729767CE5003FDB12 /* LoginView.swift in Sources */,
-				078523E529767CE5003FDB12 /* _C.swift in Sources */,
+				07CD065D29B3E87000D32283 /* MarcaExtensions.swift in Sources */,
 				075C1E0729A48F0100C9268B /* MarcaEnums.swift in Sources */,
 				079849D92990A83600F3E9DD /* MarcaTextField.swift in Sources */,
 				075C1E0929A494E600C9268B /* KeyChainProxy.swift in Sources */,
@@ -391,10 +379,10 @@
 				079849DB2990AB2000F3E9DD /* MarcaButton.swift in Sources */,
 				079849DE29935D6200F3E9DD /* EditProfileView.swift in Sources */,
 				079849C9298C766900F3E9DD /* MarcaHeader.swift in Sources */,
+				07CD065B29B3D5EC00D32283 /* MarcaStructs.swift in Sources */,
 				079849CB298C76A400F3E9DD /* MarcaFooter.swift in Sources */,
 				07BCB24C299C45DC007E0CAC /* MarcaSelect.swift in Sources */,
 				079849D1298EEFC300F3E9DD /* LogoutChoiceView.swift in Sources */,
-				078523E629767CE5003FDB12 /* MarcaError.swift in Sources */,
 				078523E929767CE5003FDB12 /* _M.swift in Sources */,
 				07E3A3672975D0AA00D53F12 /* MarcaAppApp.swift in Sources */,
 				079849CE298DDF4800F3E9DD /* _D.swift in Sources */,

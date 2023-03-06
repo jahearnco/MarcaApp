@@ -19,13 +19,14 @@ struct MarcaSelect: View{
     
     @State var key:String
     @State var tapCount:Int = 0
-    @State var choices:[String] = [_C.MPTY_STR]
+    @State var choices:[String] = [.emptyString]
     
     var imageWidth:CGFloat = 13
     var imageHeight:CGFloat = 13
     var selectImage:Image
-    var strokeColor:Color = _C.marcaLightGray
-    var bgColor:Color = _C.marcaLightGray
+    var strokeColor:Color = .marcaLightGray
+    var bgColor:Color = .marcaLightGray
+    var textForegroundColor:Color = .marcaGray
     var performImmediateAction:Bool = false
     var action:()->Void = MarcaTextFieldBaseProxy.doNothing
     
@@ -62,7 +63,7 @@ struct MarcaSelect: View{
                 HStack(alignment:.center, spacing:0){
                     
                     Text(title)
-                        .foregroundColor(_C.marcaGray)
+                        .foregroundColor(textForegroundColor)
                         .font(.custom("helvetica", size:13))
                         .padding(0)
                     Spacer()
@@ -73,8 +74,8 @@ struct MarcaSelect: View{
                         .padding(0)
                 }
                 .frame(width:width, height:height)
-                .padding(_C.TEXT_FIELD_EDGE_INSETS)
-                .border(Color.red,width:_D.flt(1))
+                .padding(.textFieldEdgeInsets)
+                .border(Color.red, width:_D.flt(1))
                 .background(bgColor)
                 .cornerRadius(5.0)
                 .overlay(
@@ -89,17 +90,11 @@ struct MarcaSelect: View{
             .border(Color.green,width:_D.flt(1))
         }
         .padding(0)
+        .onAppear(perform:{ print("MarcaSelect onAppear") })
         .onChange(of:model.tapOccurred, perform: { t in
             handleTapOccurredChange(wasTapped:t, outsideTap:true)
         })
         .onChange(of:refreshChoiceCount, perform:{rc in handleRefreshChoices() })
-        .onChange(of:marcaSelectType, perform: {t in handleTypeChange() })
-        .onChange(of:model.taskViewChoice, perform: {tvc in handleTypeChange() })
-        .onChange(of:model.mainViewChoice, perform: {mvc in handleTypeChange() })
-    }
-    
-    func handleTypeChange(){
-        print("MarcaSelect handleTypeChange marcaSelectType: \(marcaSelectType)")
     }
     
     /** ensures picker is refreshed - [] is problematic and ["String:String] may not be a change */

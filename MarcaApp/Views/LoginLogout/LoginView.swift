@@ -9,13 +9,12 @@ import Amplify
 import SwiftUI
 
 struct LoginView : View {
-    @Environment(\.dismiss) var dismiss
     @StateObject var model:_M = _M.M()
     
     @FocusState private var maybeFocusedField:Field?
     
-    @State var username: String = "John@everphase.net"
-    @State var password:String = _C.MPTY_STR
+    @State var username:String = "XXXX"
+    @State var password:String = .emptyString
     @State var keychainPassword:String?
     @State var hideWelcomeText:Bool = false
     @State var welcomeText:String = "Please Login"
@@ -30,7 +29,7 @@ struct LoginView : View {
                     WelcomeText(hideText:$hideWelcomeText, text:$welcomeText)
                     MarcaTextField(text:$username, fieldName:usernameFieldName, fontSize:22, fontWeight:.semibold, actionOnAppear:setStoredCreds, actionOnFocusChange:performWhenUnFocused)
                     MarcaTextField(isSecure:true, text:$password, fieldName:passwordFieldName, fontSize:22, fontWeight:.semibold, actionOnFocusChange:performWhenFocused)
-                    MarcaButton(action:handleLoginButtonAction, fieldName:"LoginButton", textBody:"LOGIN", type:_C.BUTTON_SUBMIT, disabled:disableButton())
+                    MarcaButton(action:handleLoginButtonAction, fieldName:"LoginButton", textBody:"LOGIN", type:.buttonSubmit, disabled:disableButton())
                     Spacer()
                 }
                 .padding(0)
@@ -45,17 +44,14 @@ struct LoginView : View {
             })
 
             ProgressView(getProgressViewLabel(model.isUserLoggedIn, model.loggedInUsername))
-                .opacity(model.isLoginButtonPressed ? 1 : 0)
-                .foregroundColor(_C.marcaGray)
+                .opacity(model.isLoginButtonPressed || model.loggedInUsername != "" ? 1 : 0)
+                .foregroundColor(.marcaGray)
                 .font(.system(size: 24, weight:.semibold, design:.default))
         }
         .padding(0)
         .opacity(model.menuDoesAppear ? 0.2 : 1)
         .border(Color.yellow, width:_D.flt(1))
-        .onAppear(perform:LoginViewProxy.handleOnLoginViewAppear)
-        .onChange(of:model.isUserLoggedIn, perform:{ isUserLoggedIn in
-            if (isUserLoggedIn){ dismiss() }
-        })
+        .onAppear(perform:{ LoginViewProxy.handleOnViewAppear() })
         .onChange(of:model.isLoginButtonPressed, perform:{ ilbp in
             hideWelcomeText = ilbp
         })
@@ -128,16 +124,24 @@ struct PurgeButtonContent : View {
 }
 */
 
-struct LoginViewProxy{
+struct LoginViewProxy:MarcaViewProxy{
+    static func handleOnViewAppear(_ model:_M?=nil, geometrySize:CGSize?=nil, items:any MarcaItem...) {
+        
+    }
+    
+    static func handleOnViewDisappear() {
+        
+    }
+    
     
     public static func setStoredCreds(username:String)->(String,String?){
         //storedUsername hardcoded for now. will grab is programatically later
-        var password:String = _C.MPTY_STR
+        var password:String = .emptyString
         var keychainPassword:String?
         
         if (username.count > 0){
             keychainPassword = LoginViewProxy.getSavedPassword(creds:Credentials(username:username))
-            password = keychainPassword ?? _C.MPTY_STR
+            password = keychainPassword ?? .emptyString
         }
         print("setStoredCreds username : \(username)")
         print("setStoredCreds password : \(password)")
@@ -157,6 +161,10 @@ struct LoginViewProxy{
             
             await AppInitProxy.handleIfUserLoggedIn(loggedInUser:loggedInUser) //explicitly state nil loggedInUser as opposed to loggedInUser with missing attribs
             
+            if loginSuccess {
+                await _M.setTaskViewChoice(.logsView)
+            }
+            
             await _M.setAuthDidFail(!loginSuccess)
             await _M.setIsLoginButtonPressed(false)
         }
@@ -166,23 +174,15 @@ struct LoginViewProxy{
         //to get here must have password.count > 0 or else button won't be enabled
         var saveType:Int
         if password != keychainPassword{
-            saveType = (keychainPassword?.count ?? 0) > 0 ? _C.KEYCHAIN_ITEM_PERSIST_UPDATE : _C.KEYCHAIN_ITEM_PERSIST_NEW
+            saveType = (keychainPassword?.count ?? 0) > 0 ? KeychainProxy.KEYCHAIN_ITEM_PERSIST_UPDATE : KeychainProxy.KEYCHAIN_ITEM_PERSIST_NEW
         }else{
-            saveType = _C.KEYCHAIN_ITEM_NO_PERSIST
+            saveType = KeychainProxy.KEYCHAIN_ITEM_NO_PERSIST
         }
         
-        print("LoginView handleLoginButtonAction keychainPassword : \(keychainPassword ?? _C.MPTY_STR)")
-        print("LoginView handleLoginButtonAction password : \(password ?? _C.MPTY_STR)")
+        print("LoginView handleLoginButtonAction keychainPassword : \(keychainPassword ?? .emptyString)")
+        print("LoginView handleLoginButtonAction password : \(password ?? .emptyString)")
         print("LoginView handleLoginButtonAction saveType : \(saveType)")
         
         return await Cognito.doLogin(username:username?.lowercased(), password:password, saveType:saveType)
     }
-    
-    public static func handleOnLoginViewAppear(){
-        Task{
-            await _M.updateTextGroupEmps([])
-            await _M.updateCellPhoneDict(_C.MPTY_STRDICT)
-        }
-    }
-    
 }

@@ -10,7 +10,7 @@ import SwiftUI
 
 struct MarcaFooter: View {
     @StateObject var model:_M = _M.M()
-    @State var height:CGFloat = _C.FOOTER_HEIGHT
+    @State var height:CGFloat = .footerHeight
     
     var body: some View {
         if (!model.inEditingMode){
@@ -61,7 +61,7 @@ struct MarcaFooter: View {
                     Text(getCaption(authDidFail:model.authDidFail))
                         .font(.footnote)
                         .fontWeight(.semibold)
-                        .foregroundColor(_C.marcaRed)
+                        .foregroundColor(.marcaRed)
                         .padding(EdgeInsets(top:0,leading:0,bottom:12,trailing:0))
                     
                     Spacer()
@@ -81,7 +81,7 @@ struct MarcaFooter: View {
                     .white,
                     .white,
                     .white,
-                    _C.deepBlueViolet,
+                    .deepBlueViolet,
                     .black
                 ]), startPoint: .top, endPoint: .bottom)
             )
@@ -90,7 +90,7 @@ struct MarcaFooter: View {
     }
     
     private func getCaption(authDidFail:Bool)->String{
-        var retMssg:String = _C.MPTY_STR
+        var retMssg:String = .emptyString
         if (authDidFail) {
             retMssg = "Login Info is not correct. Try again."
         }
@@ -98,27 +98,23 @@ struct MarcaFooter: View {
     }
     
     private func showEditProfilesButtonAction(){
+        print("showEditProfilesButtonAction invoked ...")
         _M.setTaskViewChoice(.editProfileView)
     }
     
     private func showLogsViewButtonAction(){
-        print("handleGetLogsButtonAction invoked ...")
-        _M.setProfileGroupCats([])
-        _M.updateProfileGroupEmployees([])
-        _M.updateProfileStaffNotes([])
+        print("showLogsViewButtonAction invoked ...")
         _M.setTaskViewChoice(.logsView)
-        Task{
-            await LogsViewProxy.getLogs()
-        }
-
     }
     
     private func showCreateTextButtonAction(){
+        print("showCreateTextButtonAction invoked ...")
         _M.setTaskViewChoice(.textCreateView)
     }
     
     private func showLogoutChoiceButtonAction(){
-        _M.setMainViewChoice(.logoutChoiceView)
+        print("showLogoutChoiceButtonAction invoked ...")
+        _M.setFrameViewChoice(.logoutChoiceView)
     }
 }
 

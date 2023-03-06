@@ -8,15 +8,14 @@
 import SwiftUI
 
 struct LogoutChoiceView : View {
-    @Environment(\.dismiss) var dismiss
     @StateObject var model:_M = _M.M()
 
     var body: some View {
         ZStack {
             VStack(spacing:0){
                 LogoutChoiceText()
-                MarcaButton(action:LogoutChoiceViewProxy.handleLogoutButtonAction, textBody:"LOGOUT", type:_C.BUTTON_SUBMIT)
-                MarcaButton(action:LogoutChoiceViewProxy.handleCancelLogoutButtonAction, textBody:"CANCEL", type:_C.BUTTON_CANCEL)
+                MarcaButton(action:LogoutChoiceViewProxy.handleLogoutButtonAction, textBody:"LOGOUT", type:.buttonSubmit)
+                MarcaButton(action:{ LogoutChoiceViewProxy.handleCancelLogoutButtonAction(model.taskViewChoice) }, textBody:"CANCEL", type:.buttonCancel)
                 Spacer()
             }
         
@@ -25,9 +24,6 @@ struct LogoutChoiceView : View {
         }
         .padding(0)
         .border(Color.red, width:_D.flt(1))
-        .onChange(of:model.mainViewChoice, perform:{ mvc in
-            if mvc != .logoutChoiceView { dismiss() }
-        })
     }
 
 }
@@ -41,7 +37,14 @@ struct LogoutChoiceText : View {
     }
 }
 
-struct LogoutChoiceViewProxy{
+struct LogoutChoiceViewProxy:MarcaViewProxy{
+    static func handleOnViewAppear(_ model:_M?=nil, geometrySize:CGSize?=nil, items:any MarcaItem...) {
+        //TBD
+    }
+    
+    static func handleOnViewDisappear() {
+        //TBD
+    }
     
     public static func handleLogoutButtonAction(){
         Task{
@@ -49,19 +52,20 @@ struct LogoutChoiceViewProxy{
             let logoutSuccess:Bool = await Cognito.authSignOut()
 
             if logoutSuccess {
-                await _M.setLoggedInUsername(_C.MPTY_STR)
+                await _M.setLoggedInUsername(.emptyString)
                 await _M.setIsUserLoggedIn(false)
-                await _M.setMainViewChoice(.loginView)
+                await _M.setFrameViewChoice(.loginView)
             }else{
-                await _M.setMainViewChoice(.taskView)
+                await _M.setFrameViewChoice(.taskView)
             }
             await _M.setIsLogoutChoiceButtonPressed(false)
         }
     }
     
-    public static func handleCancelLogoutButtonAction()  {
+    public static func handleCancelLogoutButtonAction(_ currentTaskView:MarcaViewChoice)  {
         Task{
-            await _M.setMainViewChoice(.taskView)
+            await _M.setFrameViewChoice(.taskView)
+            await _M.setTaskViewChoice(currentTaskView)
         }
     }
 }

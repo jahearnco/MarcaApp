@@ -21,9 +21,9 @@ struct ContentViewParent: View {
                 ContentView()
             }
             .border(Color.red, width:_D.flt(0))
-            .onAppear(perform: { ContentViewParentProxy.handleOnContentViewParentAppear(geometrySize: g.size) })
-            .onChange(of: g.size, perform: { _ in
-                ContentViewParentProxy.handleOnContentViewParentChange(geometrySize: g.size)
+            .onAppear(perform: { ContentViewParentProxy.handleOnViewAppear(geometrySize: g.size) })
+            .onChange(of: g.size, perform: {
+                ContentViewParentProxy.handleOnContentViewParentChange(geometrySize: $0 as CGSize)
             })
         }
     }
@@ -35,27 +35,31 @@ struct ContentViewParent_Previews: PreviewProvider {
     }
 }
 
-struct ContentViewParentProxy{
-    
-    public static func handleOnContentViewParentAppear(geometrySize: CGSize){
+struct ContentViewParentProxy:MarcaViewProxy{
+    static func handleOnViewDisappear() {
+        //TBD
+    }
+     
+    public static func handleOnViewAppear(_ model:_M?=nil, geometrySize:CGSize?=nil, items:any MarcaItem...){
         Task{
-            handleOnContentViewParentChange(geometrySize: geometrySize)
+            print("ContentViewParent onAppear")
+            
+            if let geometrySize = geometrySize{
+                handleOnContentViewParentChange(geometrySize: geometrySize)
+            }
             
             #if DEBUG
             UserDefaults.standard.set(false, forKey: "_UIConstraintBasedLayoutLogUnsatisfiable")
             #endif
             
             await UIApplication.shared.addTapGestureRecognizer()
-            
-            await _M.updateTextGroupEmps([])
-            await _M.updateCellPhoneDict(_C.MPTY_STRDICT)
         }
     }
     
     public static func handleOnContentViewParentChange(geometrySize: CGSize){
         Task{
-            print("handleOnContentViewParentAppear fullWidth : \(geometrySize.width) ")
-            print("handleOnContentViewParentAppear fullHeight : \(geometrySize.height) ")
+            _D.dPrint("handleOnContentViewParentAppear fullWidth : \(geometrySize.width) ")
+            _D.dPrint("handleOnContentViewParentAppear fullHeight : \(geometrySize.height) ")
             
             await _M.setAppFullWidth(geometrySize.width)
             await _M.setAppFullHeight(geometrySize.height)
@@ -64,22 +68,3 @@ struct ContentViewParentProxy{
         }
     }
 }
-
-extension UIApplication {
-    func addTapGestureRecognizer() {
-        guard let firstScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else { return }
-        guard let firstWindow = firstScene.windows.first else { return }
-        
-        let tapGesture = UITapGestureRecognizer(target: firstWindow, action: #selector(UIView.endEditing))
-        tapGesture.requiresExclusiveTouchType = false
-        tapGesture.cancelsTouchesInView = false
-        tapGesture.delegate = self
-        firstWindow.addGestureRecognizer(tapGesture)
-    }
-}
-
- extension UIApplication: UIGestureRecognizerDelegate {
-     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-         return true // set to `false` if you don't want to detect tap during other gestures
-     }
- }

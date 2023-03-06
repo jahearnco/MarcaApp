@@ -165,16 +165,16 @@ final class Cognito:MarcaClass,Singleton {
             //user entered a password and username - try to login first
             loginSuccess = await amplifyLogin(creds:creds)
             
-            if loginSuccess && saveType != _C.KEYCHAIN_ITEM_NO_PERSIST{
+            if loginSuccess && saveType != KeychainProxy.KEYCHAIN_ITEM_NO_PERSIST{
                 //user logged in with a new passwd
                 do{
                     switch(saveType){
-                        case _C.KEYCHAIN_ITEM_PERSIST_NEW:
+                        case KeychainProxy.KEYCHAIN_ITEM_PERSIST_NEW:
                             let t = try KeychainProxy.saveKeychainPassword(creds:creds)
                             print("Cognito::doLogin KEYCHAIN_ITEM_PERSIST_NEW OSStatus : \(t.0)")
                             print("Cognito::doLogin KEYCHAIN_ITEM_PERSIST_NEW returnObj : \(String(describing: t.1))")
 
-                        case _C.KEYCHAIN_ITEM_PERSIST_UPDATE:
+                        case KeychainProxy.KEYCHAIN_ITEM_PERSIST_UPDATE:
                             let t = try KeychainProxy.updateKeychainPassword(creds:creds)
                             print("Cognito::doLogin KEYCHAIN_ITEM_PERSIST_UPDATE OSStatus : \(t.0)")
                             print("Cognito::doLogin KEYCHAIN_ITEM_PERSIST_UPDATE returnObj : \(String(describing: t.1))")
@@ -345,8 +345,8 @@ struct CognitoProxy{
             let lineItems:[String] = fn.components(separatedBy: ",")
             if (lineItems.count > 0){
                 let fn:String = lineItems.count > 1 ? (lineItems[1] as String).trim() : (lineItems[0] as String).trim()
-                let ln:String = lineItems.count > 1 ? (lineItems[0] as String).trim() : _C.MPTY_STR
-                let lastInitial:String = ln.first?.description ?? _C.MPTY_STR
+                let ln:String = lineItems.count > 1 ? (lineItems[0] as String).trim() : .emptyString
+                let lastInitial:String = ln.first?.description ?? .emptyString
                 firstNameLastI = fn + " " + lastInitial
             }
         }

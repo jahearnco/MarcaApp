@@ -17,8 +17,8 @@ struct MarcaTextField: View{
     
     @State var pre:String = ""
     @State var fgColor:Color = Color.black
+    @State var fieldName:Field
     
-    var fieldName:String
     var lineLimit:ClosedRange<Int> = 1...1
     var fontFamily:String = "helvetica"
     var fontSize:CGFloat = 18
@@ -27,10 +27,11 @@ struct MarcaTextField: View{
     var sidePadding:CGFloat = 20
     var actionOnAppear:()->Void = MarcaTextFieldBaseProxy.doNothing
     var actionOnFocusChange:(Field?,Field?)->Void = MarcaTextFieldBaseProxy.doNothing
+    var submitAction:()->Void = MarcaTextFieldBaseProxy.doNothing
     
     var body: some View {
         VStack(alignment:.center, spacing:0){
-            MarcaTextFieldBase(fieldName:fieldName, isSecure:isSecure, text:$text, pre:pre)
+            MarcaTextFieldBase(fieldName:fieldName, isSecure:isSecure, text:$text, pre:pre, submitAction:submitAction)
                 .padding(0)
                 .lineLimit(lineLimit)
                 .font(.custom(fontFamily, fixedSize:fontSize))
@@ -42,11 +43,11 @@ struct MarcaTextField: View{
                 .onChange(of:maybeFocusedField, perform:{ mff in
                     handleOnFocusChange(thisFieldMaybeFocused:mff, fieldName:fieldName)
                 } )
-                .background(_C.marcaLightGray)
+                .background(Color.marcaLightGray)
                 .cornerRadius(5.0)
                 .overlay(
                     RoundedRectangle(cornerRadius:5.0)
-                        .stroke(_C.marcaLightGray, lineWidth:1)
+                        .stroke(Color.marcaLightGray, lineWidth:1)
                         .shadow(color: .gray, radius:1, x: 1, y:1)
                 )
         }
@@ -55,13 +56,13 @@ struct MarcaTextField: View{
     }
     
     private func handleOnFocusChange(thisFieldMaybeFocused:Field?, fieldName:Field) {
-        ContentViewProxy.handleOnFocusChange(thisFieldMaybeFocused:thisFieldMaybeFocused, fieldName:fieldName)
+        MarcaTextFieldBaseProxy.handleOnFocusChange(thisFieldMaybeFocused:thisFieldMaybeFocused, fieldName:fieldName)
         actionOnFocusChange(thisFieldMaybeFocused, fieldName)
     }
 }
 
 struct MarcaTextFieldBase: View {
-    var fieldName:String
+    @State var fieldName:Field
     var isSecure:Bool = false
     
     @Binding var text:String
@@ -69,40 +70,81 @@ struct MarcaTextFieldBase: View {
     
     var prefixFontFamily:String = "verdana"
     var prefixFontSize:CGFloat = 14
+    var submitAction:()->Void = MarcaTextFieldBaseProxy.doNothing
     
     var body: some View {
         ZStack{
             if (isSecure){
                 if pre.count > 0{
                     SecureField(fieldName, text:$pre)
-                        .padding(_C.TEXT_FIELD_PREFIX_EDGE_INSETS)
+                        .padding(.textFieldPrefixEdgeInsets)
                         .font(.custom(prefixFontFamily, fixedSize:prefixFontSize))
-                        .foregroundColor(_C.marcaDarkGray.opacity(0.6))
+                        .foregroundColor(Color.marcaDarkGray.opacity(0.6))
                         .fontWeight(.bold)
                         .disabled(true)
                 }
                 
                 SecureField(fieldName, text:$text)
-                    .padding(_C.TEXT_FIELD_EDGE_INSETS)
+                    .padding(.textFieldEdgeInsets)
                 
             }else{
                 if pre.count > 0{
                     TextField(fieldName, text:$pre, axis:.vertical)
-                        .padding(_C.TEXT_FIELD_PREFIX_EDGE_INSETS)
+                        .padding(.textFieldPrefixEdgeInsets)
                         .font(.custom(prefixFontFamily, fixedSize:prefixFontSize))
-                        .foregroundColor(_C.marcaDarkGray.opacity(0.6))
+                        .foregroundColor(Color.marcaDarkGray.opacity(0.6))
                         .fontWeight(.bold)
                         .disabled(true)
                 }
                 
                 TextField(fieldName, text:$text, axis:.vertical)
-                    .padding(_C.TEXT_FIELD_EDGE_INSETS)
+                    .padding(.textFieldEdgeInsets)
+                    .submitLabel(.send)
+                    .submitScope(true)
+                    .onSubmit { submitAction() }
             }
         }
     }
 }
 
-struct MarcaTextFieldBaseProxy{
-    public static func doNothing(){}
+struct MarcaTextFieldBaseProxy:MarcaViewProxy{
+    static var handleOnFocusChangeComplete:Bool = true
+    
+    static func handleOnViewAppear(_ model: _M?=nil, geometrySize: CGSize?=nil, items:any MarcaItem...) {
+        print("MarcaTextField onAppear")
+    }
+    
+    static func handleOnViewDisappear() {
+        
+    }
+    
+    public static func doNothing(){ print("???!!!") }
     public static func doNothing(thisFieldMaybeFocused:Field?=nil, fieldName:Field?=nil){}
+    
+    public static func handleOnFocusChange(thisFieldMaybeFocused:Field?, fieldName:Field){
+        Task{
+           while(!handleOnFocusChangeComplete){}
+            
+            if let model = _M.M(){
+                handleOnFocusChangeComplete = false
+            
+                let fieldCurrentlyInFocus = model.fieldMaybeInFocus
+                
+                _D.dPrint("ContentViewProxy handleOnFocusChange: thisFieldMaybeFocused = \(thisFieldMaybeFocused ?? .emptyString)")
+                _D.dPrint("ContentViewProxy handleOnFocusChange: fieldCurrentlyInFocus = \(fieldCurrentlyInFocus ?? .emptyString)")
+                
+                //yes. i agree. this is NUTS but it's exactly how one keeps track of what's in focus!
+                if ((thisFieldMaybeFocused == nil && fieldCurrentlyInFocus == fieldName) || (thisFieldMaybeFocused != nil && fieldCurrentlyInFocus != fieldName)){
+                    await _M.setFieldMaybeInFocus(thisFieldMaybeFocused)
+                }
+                
+                await _M.setInEditingMode(model.fieldMaybeInFocus != nil)
+                await _M.setAuthDidFail(false)
+                
+                _D.dPrint("ContentViewProxy handleOnFocusChange: inEditingMode = \(model.inEditingMode)")
+                
+                handleOnFocusChangeComplete = true
+            }
+        }
+    }
 }

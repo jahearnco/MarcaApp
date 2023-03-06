@@ -20,9 +20,6 @@ final class MarcaAppApp: App {
             try Amplify.add(plugin: AWSCognitoAuthPlugin())
             try Amplify.configure()
             
-            _D.fltDebug = false
-            _D.printDebug = false
-            
             print("Amplify configured with auth plugin")
         }catch{
             print(error)
@@ -46,14 +43,14 @@ final class MarcaAppApp: App {
             ContentViewParent()
         }
     }
-
+    
     /*
      * static Singleton instance: instantiate once/store once
      * after setting here instance is acquired by _M.M()
      */
     private func initDataModel() {
-        let model = MarcaClassFactory.getInstance(className:"_M", kType: _M.self, instanceLabel:"modelA") as? _M
-        print("model initialized : \(model!.getInstanceLabel()) ")
+        let mA = MarcaClassFactory.getInstance(className:"_M", kType: _M.self, instanceLabel:"modelA") as? _M
+        print("model initialized : \(mA!.getInstanceLabel()) ")
     }
     
     /*
@@ -67,30 +64,25 @@ final class MarcaAppApp: App {
     }
 }
 
-extension String {
-    func toJSON() -> Any? {
-        guard let data = self.data(using: .utf8, allowLossyConversion: false) else { return nil }
-        return try? JSONSerialization.jsonObject(with: data, options: .mutableContainers)
-    }
-}
-
 struct AppInitProxy{
     public static func handleIfUserLoggedIn(loggedInUser:AuthUser?)async{
+        print("AppInitProxy handleIfUserLoggedIn ...")
         let isLoggedIn = loggedInUser != nil
-        await _M.setMainViewChoice(.loginView)
+        
+        /** REMIND: the order of the next two lines is critical. and a problem. FIX IT*/
         await _M.setTaskViewChoice(.logsView)
+        await _M.setFrameViewChoice(.loginView)
         
         if isLoggedIn {
-            await _M.setIsLoginButtonPressed(true)
             let user:User = await Cognito.getUser(loggedInUser:loggedInUser)
             await _M.setUser(user)//updates on main thread asap
-            await _M.setLoggedInUsername(user.userFirstNameLastI ?? _C.MPTY_STR)//updates on main thread asap
+            await _M.setLoggedInUsername(user.userFirstNameLastI ?? .emptyString)//updates on main thread asap
+            
             //introduce delay here so user can see their name in progress view
-            try? await Task.sleep(nanoseconds: 2_500_000_000)
+            try? await Task.sleep(nanoseconds: 1_800_000_000)
+            
             await _M.setIsUserLoggedIn(true)//updates on main thread asap
-            await _M.setMainViewChoice(.taskView)
-            await LogsViewProxy.getLogs()//loading in background
-            await _M.setIsLoginButtonPressed(false)
+            await _M.setFrameViewChoice(.taskView)
         }
         
         await _M.setCacheKiller(String(describing:Date().timeIntervalSince1970))

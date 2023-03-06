@@ -46,7 +46,7 @@ final class _M:MarcaClass,ObservableSingleton {
         M().isLoginButtonPressed = isLoginButtonPressed
     }
 
-    @Published var headerHeight:CGFloat = _C.HEADER_HEIGHT_PORTRAIT
+    @Published var headerHeight:CGFloat = .headerHeightPortrait
     @MainActor
     public static func setHeaderHeight(_ headerHeight:CGFloat){
         M().headerHeight = headerHeight
@@ -88,18 +88,26 @@ final class _M:MarcaClass,ObservableSingleton {
         M().authDidFail = authDidFail
     }
     
-    @Published var mainViewChoice:MarcaViewChoice = .noView
+    @Published var frameViewChoice:MarcaViewChoice = .noView
     @MainActor
-    public static func setMainViewChoice(_ mainViewChoice:MarcaViewChoice){
-        M().mainViewChoice = mainViewChoice
+    public static func setFrameViewChoice(_ frameViewChoice:MarcaViewChoice){
+        M().frameViewChoice = frameViewChoice
+        setCurrentView(frameViewChoice)
     }
     
     @Published var taskViewChoice:MarcaViewChoice = .noView
     @MainActor
     public static func setTaskViewChoice(_ taskViewChoice:MarcaViewChoice){
         M().taskViewChoice = taskViewChoice
+        setCurrentView(taskViewChoice)
     }
  
+    @Published var currentView:MarcaViewChoice = .noView
+    @MainActor
+    public static func setCurrentView(_ currentView:MarcaViewChoice){
+        M().currentView = currentView
+    }
+    
     @Published var isLogoutChoiceButtonPressed:Bool = false
     @MainActor
     public static func setIsLogoutChoiceButtonPressed(_ isLogoutChoiceButtonPressed:Bool){
@@ -136,28 +144,10 @@ final class _M:MarcaClass,ObservableSingleton {
         M().isUserLoggedIn = isUserLoggedIn
     }
 
-    @Published var currentViewTitle:String = _C.MPTY_STR
-    @MainActor
-    public static func setCurrentViewTitle(_ currentViewTitle:String){
-        M().currentViewTitle = currentViewTitle
-    }
-    
-    @Published var loggedInUsername:String = _C.MPTY_STR
+    @Published var loggedInUsername:String = .emptyString
     @MainActor
     public static func setLoggedInUsername(_ loggedInUsername:String){
         M().loggedInUsername = loggedInUsername
-    }
-     
-    @Published var profile:Profile = Profile()
-    @MainActor
-    public static func setProfile(_ profile:Profile){
-        M().profile = profile
-    }
-    
-    @Published var profileStaffNotes:[[String:String]] = _C.MPTY_STRDICT_ARRAY
-    @MainActor
-    public static func updateProfileStaffNotes(_ profileStaffNotes:[[String:String]]){
-        M().profileStaffNotes = profileStaffNotes
     }
     
     @Published var user:User?
@@ -165,67 +155,15 @@ final class _M:MarcaClass,ObservableSingleton {
     public static func setUser(_ user:User?){
         M().user = user
     }
-
-    @Published var logs:[[String:String]] = _C.MPTY_STRDICT_ARRAY
-    @MainActor
-    public static func updateLogs(_ logs:[[String:String]]){
-        M().logs = logs
-    }
-    
-    @Published var communityLogs:[[String:String]] = _C.MPTY_STRDICT_ARRAY
-    @MainActor
-    public static func updateCommunityLogs(_ communityLogs:[[String:String]]){
-        M().communityLogs = communityLogs
-    }
-
-    @Published var cellPhoneDict:[String:String] = _C.MPTY_STRDICT
-    @MainActor
-    public static func updateCellPhoneDict(_ cellPhoneDict:[String:String]){
-        M().cellPhoneDict = cellPhoneDict
-    }
-    
-    @Published var textGroupEmployees:[IdentifiableGroupEmployees] = []
-    @MainActor
-    public static func updateTextGroupEmps(_ textGroupEmployees:[IdentifiableGroupEmployees]){
-        M().textGroupEmployees = textGroupEmployees
-    }
-    
-    @Published var profileGroupEmployees:[IdentifiableGroupEmployees] = []
-    @MainActor
-    public static func updateProfileGroupEmployees(_ profileGroupEmployees:[IdentifiableGroupEmployees]){
-        M().profileGroupEmployees = profileGroupEmployees
-    }
     
     @Published var overlayIsShowing:Bool = false
     public static func setOverlayIsShowing(_ overlayIsShowing:Bool){
         M().overlayIsShowing = overlayIsShowing
     }
-    
-    @Published var profileGroupCats:[IdentifiableGroupCategories] = _C.PROFILE_GROUP_CATEGORIES
-    @MainActor
-    public static func setProfileGroupCats(_ profileGroupCats:[IdentifiableGroupCategories]){
-        M().profileGroupCats = profileGroupCats
-    }
 
-    @Published var textGroupCats:[IdentifiableGroupCategories] = _C.TEXT_GROUP_CATEGORIES
+    @Published var communityLogs:[MarcaLogItem] = []
     @MainActor
-    public static func setTextGroupCats(_ textGroupCats:[IdentifiableGroupCategories]){
-        M().textGroupCats = textGroupCats
+    public static func updateCommunityLogs(_ communityLogs:[MarcaLogItem]){
+        M().communityLogs = communityLogs
     }
 }
-
-struct IdentifiableGroupCategories: Identifiable {
-    var id = UUID()
-    var name: String?// = _C.MPTY_STR
-    var range: String?// = _C.MPTY_STR
-    var title: String?// = _C.MPTY_STR
-    var role: String?// = _C.MPTY_STR
-}
-
-struct IdentifiableGroupEmployees: Identifiable {
-    var id = UUID()
-    var name: String?// = _C.MPTY_STR
-    var phone: String?// = _C.MPTY_STR
-    var empId: String?// = _C.MPTY_STR
-}
-

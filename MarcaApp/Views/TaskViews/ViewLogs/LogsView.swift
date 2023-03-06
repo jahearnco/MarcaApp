@@ -8,18 +8,22 @@ import Amplify
 import SwiftUI
 
 struct LogsView: View {
-    @Environment(\.dismiss) var dismiss
+    //@Environment(\.dismiss) var dismiss
     @StateObject var model:_M = _M.M()
-
-    var bgColor:Color = _C.marcaLightGray
-    var bodyHeight:CGFloat = 86
+    @Binding var logs:[MarcaLogItem]
+    
+    var bgColor:Color = .marcaLightGray
+    var bodyHeight:CGFloat = 120
     var outerMarginWidth:CGFloat = 16
     
     var body: some View {
         VStack(alignment:.center, spacing:0){
             List {
-                ForEach(model.logs, id: \.self) { logDict in
-                    MarcaLogView(logDict:logDict, bgColor:bgColor, bodyHeight:bodyHeight, outerMarginWidth:outerMarginWidth)
+                ForEach (logs) { logItem in
+                    MarcaLogView(logItem:logItem, bgColor:bgColor, bodyHeight:bodyHeight, outerMarginWidth:outerMarginWidth)
+                }
+                .onDelete { indexSet in
+                    logs.remove(atOffsets: indexSet)
                 }
             }
             .listStyle(.inset)
@@ -30,75 +34,66 @@ struct LogsView: View {
         .padding(0)
         .opacity(model.menuDoesAppear ? 0.2 : 1)
         .border(Color.green, width:_D.flt(1))
-        .onAppear(perform: {
-            _D.print("LogsView onAppear logList:\(String(describing:model.logs))")
-        } )
-        .onChange(of:model.logs, perform: { list in
-            _D.print("LogsView onChange logList:\(String(describing: list))")
-        } )
+        .onAppear(perform:handleOnViewAppear)
+    }
+    
+    func handleOnViewAppear(){
+        print("LogsView handleOnViewAppear BEGIN")
+        logs = []
+        print("LogsView handleOnViewAppear END")
     }
 }
 
 struct CommunityLogsView: View {
-    @Environment(\.dismiss) var dismiss
     @StateObject var model:_M = _M.M()
-
+    
     var body: some View {
         ZStack{
-            LogsView().padding(.bottom, 1)
+            LogsView(logs:$model.communityLogs)
+                .padding(.bottom, 1)
+                .onAppear(perform: { CommunityLogsViewProxy.handleOnViewAppear(model) } )
 
             ProgressView("Loading ...")
-                .opacity(model.logs.count == 0 ? 1 : 0)
+                .opacity(model.communityLogs.count == 0 ? 1 : 0)
         }
-        .onAppear(perform: {
-            LogsViewProxy.handleOnCommunityLogsViewAppear();
-            _D.print("CommunityLogsView onAppear logList:\(String(describing: model.logs))")
-        } )
-        .onChange(of:model.logs, perform: { list in
-            _D.print("CommunityLogsView onChange logList:\(String(describing: list))")
-        } )
-        .onChange(of:model.taskViewChoice, perform:{ tvc in
-            if tvc != .logsView {
-                LogsViewProxy.handleDismiss(dismiss)
-            }
-        })
     }
 }
 
-struct LogsViewProxy{
-    static var model:_M = _M.M()
-    
-    public static func handleDismiss(_ dismiss:DismissAction){
+struct CommunityLogsViewProxy:MarcaViewProxy{
+    public static func handleOnViewAppear(_ model:_M?=nil, geometrySize:CGSize?=nil, items:any MarcaItem...) {
         Task{
-            await _M.updateLogs([])
-            dismiss()
+            print("await _M.updateCommunityLogs([]) BEGIN")
+            await _M.updateCommunityLogs([])
+            print("await getCommunityLogs(model?.user) BEGIN")
+            let logItems = await getCommunityLogs(model?.user)
+            print("await getCommunityLogs(model?.user) END")
+            await _M.updateCommunityLogs(logItems)
+            print("await _M.updateCommunityLogs(model.communityLogs) END")
         }
+    }
+
+    public static func handleOnViewDisappear(){
+
     }
     
     public static func formatTitleDate(dateStr:String)->String{
         return dateStr
     }
     
-    public static func getLogs() async {
-        await _M.updateCommunityLogs([])
-        await _M.updateLogs([])
-        
-        var usr:User!
-        if let _ = model.user{
-            usr = model.user
-        }else{
+    public static func getCommunityLogs(_ user:User?) async -> [MarcaLogItem]{
+        guard let user = user else {
             print("cannot get logs - user is nil")
-            return
+            return []
         }
         
-        var descArr: [[String: String]] = []
+        var logItems:[MarcaLogItem] = []
         
-        print("getLogs() making RESTRequest ... ")
+        print("getCommunityLogs() making RESTRequest ... ")
 
         let body = [
-            "employeeWorkGroups": usr.userWorkgroups,
-            "roleId" : usr.userRole,
-            "timeStr" : usr.logviewTimeframe,
+            "employeeWorkGroups": user.userWorkgroups,
+            "roleId" : user.userRole,
+            "timeStr" : user.logviewTimeframe,
             "typeVal":"All",
             "topicVal":"All"
         ]
@@ -116,7 +111,6 @@ struct LogsViewProxy{
                 if let wLogs = wlogDict["workLogs"] as? NSArray {
                     
                     print("wLogs.count = \(wLogs.count)")
-                    
                     for wLog:Any in wLogs {
                         var descStr:String?
                         var authStr:String?
@@ -144,9 +138,8 @@ struct LogsViewProxy{
                                     }
                                     
                                     if (authStr != nil && descStr != nil){
-                                        let sureTitle:String! = titleStr ?? _C.MPTY_STR
-                                        let descDict:[String:String] = ["auth": authStr!,"desc":descStr!,"title":sureTitle,"logDateStr":dateStr!]
-                                        descArr.append(descDict)
+                                        let logItem = MarcaLogItem(itemId:"item\(logItems.count)", auth:authStr!, desc:descStr!, title:titleStr ?? .emptyString, createDateStr:dateStr!)
+                                        logItems.append(logItem)
                                         break
                                     }
                                 }
@@ -155,20 +148,10 @@ struct LogsViewProxy{
                     }
                 }
             }
-            await _M.updateCommunityLogs(descArr)
-            await _M.updateLogs(model.communityLogs)
 
         }catch{
             print(error)
         }
-        //return descArr
-    }
-
-    public static func handleOnCommunityLogsViewAppear(){
-        Task{
-            await _M.setCurrentViewTitle("View Logs")
-            await _M.updateTextGroupEmps([])
-            await _M.updateCellPhoneDict(_C.MPTY_STRDICT)
-        }
+        return logItems
     }
 }

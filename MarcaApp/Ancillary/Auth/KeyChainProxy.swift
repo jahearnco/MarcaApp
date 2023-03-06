@@ -15,13 +15,13 @@ struct KeychainProxy{
     
     public static func updateKeychainPassword(creds:Credentials) throws -> (OSStatus, AnyObject?){
         let attribsToUpdate = [kSecValueData: creds.password!.data(using: .utf8)!] as CFDictionary
-        let query = getKechainItemQuery(creds:creds, type:_C.KEYCHAIN_ITEM_UPDATE)
-        return (SecItemUpdate(query, attribsToUpdate), _C.OPT_ANYOBJECT)
+        let query = getKechainItemQuery(creds:creds, type:KEYCHAIN_ITEM_UPDATE)
+        return (SecItemUpdate(query, attribsToUpdate), .optAnyObject)
     }
     
     public static func saveKeychainPassword(creds:Credentials) throws -> (OSStatus, AnyObject?){
         var result: AnyObject?
-        let query = getKechainItemQuery(creds:creds, type:_C.KEYCHAIN_ITEM_ADD)
+        let query = getKechainItemQuery(creds:creds, type:KEYCHAIN_ITEM_ADD)
         return (SecItemAdd(query, &result), result)
     }
 
@@ -38,11 +38,11 @@ struct KeychainProxy{
         }catch{
             print("ERROR KeychainProxy::loadKeychainPassword \(error)")
         }
-        return _C.OPT_STRING
+        return .optString
     }
     
     private static func findKeychainItemDict(creds:Credentials) throws -> (OSStatus, AnyObject?){
-        let query = getKechainItemQuery(creds:creds, type:_C.KEYCHAIN_ITEM_FIND)
+        let query = getKechainItemQuery(creds:creds, type:KEYCHAIN_ITEM_FIND)
         var result: AnyObject?
         return (SecItemCopyMatching(query, &result), result)
     }
@@ -53,7 +53,7 @@ struct KeychainProxy{
             let query = [
                 kSecClass: kSecClassInternetPassword,
                 kSecAttrServer: svr,
-                kSecAttrAccount: "John@everphase.net"
+                kSecAttrAccount: "XXXX"
             ] as CFDictionary
             
             print("svr:\(svr) \(SecItemDelete(query))")
@@ -63,28 +63,39 @@ struct KeychainProxy{
     private static func getKechainItemQuery(creds:Credentials, type:Int)->CFDictionary{
         var retQuery:[CFString: Any] = [
             kSecClass: kSecClassInternetPassword,
-            kSecAttrServer: _C.REMOTE_SERVER
+            kSecAttrServer: REMOTE_SERVER
         ]
         
         if let un = creds.username{
             retQuery[kSecAttrAccount] = un.lowercased()
 
             //add
-            if type == _C.KEYCHAIN_ITEM_ADD, let pw = creds.password, pw.count > 0{
+            if type == KEYCHAIN_ITEM_ADD, let pw = creds.password, pw.count > 0{
                 retQuery[kSecValueData] = pw.data(using: String.Encoding.utf8)!
             }
             
             //find
-            if type == _C.KEYCHAIN_ITEM_FIND{
-                retQuery[kSecMatchLimit] = _C.KEYCHAIN_ITEM_MATCH_LIMIT
+            if type == KEYCHAIN_ITEM_FIND{
+                retQuery[kSecMatchLimit] = KEYCHAIN_ITEM_MATCH_LIMIT
             }
             
             //item update query does not take these dict keys,vals
-            if type != _C.KEYCHAIN_ITEM_UPDATE{
+            if type != KEYCHAIN_ITEM_UPDATE{
                 retQuery[kSecReturnAttributes] = true
                 retQuery[kSecReturnData] = true
             }
         }
         return retQuery as CFDictionary
     }
+    
+    /** Cognito keychain */
+    static let REMOTE_SERVER = "www.everphase.net"
+    static let KEYCHAIN_ITEM_ADD:Int = 0
+    static let KEYCHAIN_ITEM_UPDATE:Int = 1
+    static let KEYCHAIN_ITEM_FIND:Int = 2
+    static let KEYCHAIN_ITEM_MATCH_LIMIT:Int = 3
+    
+    static let KEYCHAIN_ITEM_NO_PERSIST:Int = 0
+    static let KEYCHAIN_ITEM_PERSIST_NEW:Int = 1
+    static let KEYCHAIN_ITEM_PERSIST_UPDATE:Int = 2
 }

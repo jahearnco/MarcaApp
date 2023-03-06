@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-struct MarcaClassFactory{
+enum MarcaClassFactory{
 
-    public static func getInstance<T:MarcaClass>(className:String, kType:T.Type, instanceLabel:String=_C.MPTY_STR)->MarcaClass!{
+    public static func getInstance<T:MarcaClass>(className:String, kType:T.Type, instanceLabel:String = .emptyString)->MarcaClass!{
         var maybeNewInstance:MarcaClass?
         let Klass = NSClassFromString("MarcaApp.\(className)") as? T.Type
         do{
@@ -33,8 +33,8 @@ struct MarcaClassFactory{
     public static func handleNewInstance<T:MarcaClass>(instance:MarcaClass?, kType:T.Type, instanceLabel:String)throws {
         if let S = kType as? Singleton.Type{
             if let si = S.getStaticInstance(){
-                print("required init throwing MarcaError instanceLabel : \((si as! MarcaClass).getInstanceLabel())")
-                throw MarcaError(message: _C.SINGLETON_EXISTS, methodName:#function, className:String(describing:type(of:instance)), instanceLabel:instanceLabel)
+                _D.dPrint("required init throwing MarcaError instanceLabel : \((si as! MarcaClass).getInstanceLabel())")
+                throw MarcaError.invalidInstance(message: MarcaError.SINGLETON_EXISTS, method:#function, instanceLabel:instanceLabel)
             }else{
                 S.setStaticInstance(si:instance as? Singleton)
             }
@@ -43,20 +43,14 @@ struct MarcaClassFactory{
         if let i = instance{
             i.setInstanceLabel(il:instanceLabel)
         }else{
-            print("handleNewInstance throwing MarcaError : NO INSTANCE EXISTS!!")
-            throw MarcaError(message: _C.ERROR_CLASS_FACTORY, methodName:#function, className:"NONE", instanceLabel:instanceLabel)
+            _D.dPrint("handleNewInstance throwing MarcaError : NO INSTANCE EXISTS!!")
+            throw MarcaError.invalidInstance(message: MarcaError.ERROR_CLASS_FACTORY, method:#function, instanceLabel:instanceLabel)
         }
     }
 }
 
-protocol Marca{
-    var instanceLabel:String { get set }
-    init(instanceLabel:String) throws
-    func getInstanceLabel()->String
-}
-
 class MarcaClass:Marca{
-    var instanceLabel:String = _C.MPTY_STR
+    var instanceLabel:String = .emptyString
     public func getInstanceLabel()->String{ return instanceLabel }
     public func setInstanceLabel(il:String){ instanceLabel = il }
     required init(instanceLabel:String) throws{
@@ -66,13 +60,6 @@ class MarcaClass:Marca{
             print(error)
         }
     }
-    deinit { print("DEINIT : Singleton instanceLabel:\(getInstanceLabel()) \(_C.WARN_MULTIPLE_INSTANCES_NOT_ALLOWED)") }
+    deinit { print("DEINIT : Singleton instanceLabel:\(getInstanceLabel()) \(MarcaError.WARN_MULTIPLE_INSTANCES_NOT_ALLOWED)") }
 }
-
-protocol Singleton{
-    static func getStaticInstance()->Singleton?
-    static func setStaticInstance(si:Singleton!)
-}
-
-protocol ObservableSingleton:ObservableObject,Singleton{}
 

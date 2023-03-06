@@ -28,7 +28,7 @@ struct MarcaHeader: View {
         .background(
             LinearGradient(gradient: Gradient(colors:[
                 .black,
-                _C.deepBlueViolet,
+                .deepBlueViolet,
                 .white,
                 .gray.opacity(0.1)
             ]),startPoint: .top, endPoint: .bottom)
@@ -37,7 +37,7 @@ struct MarcaHeader: View {
     }
 
     private func handleOrientationChange(_ isPortrait:Bool){
-        let height:CGFloat = isPortrait ? _C.HEADER_HEIGHT_PORTRAIT : _C.HEADER_HEIGHT_LANDSCAPE
+        let height:CGFloat = isPortrait ? .headerHeightPortrait : .headerHeightLandscape
         _M.setHeaderHeight(height)
     }
 }
@@ -65,9 +65,9 @@ struct Title : View{
     
     var body: some View {
         HStack(alignment:.bottom, spacing:0){
-            Text(getTitleString(isLoggedIn:model.isUserLoggedIn, currentViewTitle:model.currentViewTitle))
+            Text(MarcaTitle.getTitle(from: .viewTitle(currentView: model.currentView)))
                 .font(getFont(isLoggedIn:model.isUserLoggedIn))
-                .foregroundColor(_C.marcaGray)
+                .foregroundColor(.marcaGray)
                 .padding(0)
         }
         .padding(getEdgeInsets(model.isUserLoggedIn))
@@ -78,9 +78,11 @@ struct Title : View{
         return isLoggedIn ? Font.custom("Optima-Bold", size:17) : Font.custom("Optima-Bold", size:19)
     }
     
-    private func getTitleString(isLoggedIn:Bool, currentViewTitle:String?)->String{
-        return isLoggedIn ? currentViewTitle ?? _C.MPTY_STR : "MARCA"
+    /*
+    private func getTitleString(isLoggedIn:Bool, currentViewTitle:MarcaTitle)->String{
+        return isLoggedIn ? currentViewTitle ?? .emptyString : "MARCA"
     }
+     */
     
     private func getEdgeInsets(_ isLoggedIn:Bool)->EdgeInsets{
         return isLoggedIn ? EdgeInsets(top:0, leading: 0, bottom:-1, trailing:20) : EdgeInsets(top:0, leading: 0, bottom:-1, trailing:0)
@@ -90,7 +92,7 @@ struct Title : View{
 struct ActionButton : View{
     @StateObject var model:_M = _M.M()
     
-    @State var preferenceSelection:String = _C.MPTY_STR
+    @State var preferenceSelection:String = .emptyString
     @State var refreshChoiceCount:Int = 0
     @State var menuTitle:String = ""
     @State var marcaSelectType:MarcaSelectType = .loginMenuChoices
@@ -112,8 +114,7 @@ struct ActionButton : View{
         )
         .padding(EdgeInsets(top:0, leading:0, bottom:-6, trailing:12))
         .onChange(of:preferenceSelection, perform:{ ps in handlePreferenceSelectionChange(ps) } )
-        .onChange(of:model.taskViewChoice, perform: { tvc in getMarcaSelectType() })
-        .onChange(of:model.mainViewChoice, perform: { mvc in getMarcaSelectType() })
+        .onChange(of:[model.taskViewChoice, model.frameViewChoice], perform: { c in getMarcaSelectType() })
         .onChange(of:model.isUserLoggedIn, perform: { iuli in getMarcaSelectType() })
         .onChange(of:marcaSelectType, perform: { mst in getMarcaSelectType() })
     }

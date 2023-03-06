@@ -15,7 +15,7 @@ struct _D{
         return fltDebug ? flt : 0.0
     }
     
-    static func print(_ str:String){
-        if printDebug { print(str) }
+    static func dPrint(_ str:String){
+        if printDebug { print("\(String(describing:str))") }
     }
 }

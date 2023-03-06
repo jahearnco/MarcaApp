@@ -23,7 +23,7 @@ MarcaApp is a limited feature app version of MARCA based on iOS Amplify-Swift li
    <a href="https://github.com/jahearnco/MarcaApp/blob/main/MarcaApp/Ancillary/Auth/Cognito.swift">AWS Cognito</a><br/>
    <a href="https://github.com/jahearnco/MarcaApp/blob/main/MarcaApp/Ancillary/Auth/KeyChainProxy.swift">KeyChainProxy</a>
 # ![Marca Banner](Assets.xcassets/smallestlogo.png) &nbsp; <a href="https://github.com/jahearnco/MarcaApp/blob/main/MarcaApp/Ancillary/Constants/MarcaEnums.swift">Enums</a>
-    enum KeychainError: Error
+    enum MarcaError: Error
     enum MarcaViewChoice
     enum MarcaProfileTitle:String,CaseIterable
     enum MarcaLoginMenuChoice:String,CaseIterable
@@ -43,7 +43,7 @@ MarcaApp is a limited feature app version of MARCA based on iOS Amplify-Swift li
     @Published var fieldMaybeInFocus:Field?
     @Published var inEditingMode:Bool
     @Published var authDidFail:Bool
-    @Published var mainViewChoice:MarcaViewChoice
+    @Published var frameViewChoice:MarcaViewChoice
     @Published var taskViewChoice:MarcaViewChoice
     @Published var isLogoutChoiceButtonPressed:Bool
     @Published var appFullScreenAspectRatio:CGFloat
@@ -58,18 +58,18 @@ MarcaApp is a limited feature app version of MARCA based on iOS Amplify-Swift li
     @Published var user:User?
     @Published var logs:[[String:String]]
     @Published var communityLogs:[[String:String]]
-    @Published var cellPhoneDict:[String:String]
-    @Published var textGroupEmployees:[IdentifiableGroupEmployees]
-    @Published var profileGroupEmployees:[IdentifiableGroupEmployees]
+    @Published var profileHash:ContactInfoList?
+    //@Published var textingProfileHash:[IdentifiableGroupEmployees]
+    @Published var profileHash:[IdentifiableGroupEmployees]
     @Published var overlayIsShowing:Bool
-    @Published var profileGroupCats:[IdentifiableGroupCategories]
-    @Published var textGroupCats:[IdentifiableGroupCategories]
+    @Published var profileGroupCats:[WorkgroupCategory]
+    @Published var textingGroupCats:[WorkgroupCategory]
 # ![Marca Banner](Assets.xcassets/smallestlogo.png) &nbsp; <a href="https://github.com/jahearnco/MarcaApp/tree/main/MarcaApp/Ancillary/Factories">Factory</a>
     protocol Marca{}
     protocol Singleton{}
     protocol ObservableSingleton:ObservableObject,Singleton{}
     class MarcaClass:Marca{}
-    MarcaClassFactory public static func getInstance<T:MarcaClass>(className:String, kType:T.Type, instanceLabel:String=_C.MPTY_STR)->MarcaClass! {} 
+    MarcaClassFactory public static func getInstance<T:MarcaClass>(className:String, kType:T.Type, instanceLabel:String=.emptyString)->MarcaClass! {} 
     MarcaClassFactory public static func handleNewInstance<T:MarcaClass>(instance:MarcaClass?, kType:T.Type, instanceLabel:String)throws {}
 # ![End Banner](Assets.xcassets/smallestlogo.png) &nbsp; <a href="https://www.everphase.net/resume">Everphase</a>
 Full Stack :: iOS :: AWS :: iOT :: LAMP :: Smart Devices :: EE :: Engineering Physics

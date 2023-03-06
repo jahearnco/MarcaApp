@@ -11,7 +11,7 @@ struct MarcaButton: View {
     @StateObject var model:_M = _M.M()
 
     var action:()->Void
-    var fieldName:String = _C.MPTY_STR
+    var fieldName:String = .emptyString
     var textBody:String
     var type:Int
     var disabled:Bool = false
@@ -30,6 +30,6 @@ struct MarcaButton: View {
     }
                     
     private func getFillColor()->Color{
-        return disabled ? _C.marcaLightGray : type == _C.BUTTON_SUBMIT ? _C.deepBlueViolet : _C.marcaRed
+        return disabled ? .marcaLightGray : type == .buttonSubmit ? .deepBlueViolet : .marcaRed
     }
 }
