@@ -39,7 +39,19 @@ MarcaApp is a limited feature app version of MARCA based on iOS Amplify-Swift li
     protocol MarcaViewProxy
     protocol Marca
     protocol Singleton
-    protocol ObservableSingleton:ObservableObject,Singleton{}
+    protocol ObservableSingleton:ObservableObject,Singleton
+# ![Marca Banner](Assets.xcassets/smallestlogo.png) &nbsp; <a href="https://github.com/jahearnco/MarcaApp/blob/main/MarcaApp/Ancillary/Crucible/MarcaExtensions.swift">Extensions</a>
+    extension UIApplication
+    extension UIApplication: UIGestureRecognizerDelegate
+    extension AnyObject?
+    extension String
+    extension CaseIterable where Self: RawRepresentable
+    extension Color
+    extension MarcaLogItem
+    extension Profile
+    extension Int
+    extension CGFloat
+    extension EdgeInsets
 # ![Marca Banner](Assets.xcassets/smallestlogo.png) &nbsp; <a href="https://github.com/jahearnco/MarcaApp/blob/main/MarcaApp/Ancillary/Models/_M.swift">Model</a>
     @Published var cacheKiller:String
     @Published var isPortraitOrientation:Bool
