@@ -34,7 +34,7 @@ MarcaApp is a limited feature app version of MARCA based on iOS Amplify-Swift li
     enum MarcaLogsViewMenuChoice:String,CaseIterable
     enum MarcaSelectType:String,CaseIterable
     enum MarcaItemHashManager
-    # ![Marca Banner](Assets.xcassets/smallestlogo.png) &nbsp; <a href="https://github.com/jahearnco/MarcaApp/blob/main/MarcaApp/Ancillary/Crucible/MarcaProtocols.swift">Protocols</a>
+# ![Marca Banner](Assets.xcassets/smallestlogo.png) &nbsp; <a href="https://github.com/jahearnco/MarcaApp/blob/main/MarcaApp/Ancillary/Crucible/MarcaProtocols.swift">Protocols</a>
     protocol MarcaItem:Identifiable,Equatable
     protocol MarcaViewProxy
     protocol Marca
