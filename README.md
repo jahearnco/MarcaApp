@@ -76,13 +76,10 @@ MarcaApp is a limited feature app version of MARCA based on iOS Amplify-Swift li
     @Published var user:User?
     @Published var overlayIsShowing:Bool = false
     @Published var communityLogs:[MarcaLogItem] = []
-# ![Marca Banner](Assets.xcassets/smallestlogo.png) &nbsp; <a href="https://github.com/jahearnco/MarcaApp/tree/main/MarcaApp/Ancillary/Factories">Factory</a>
-    protocol Marca{}
-    protocol Singleton{}
-    protocol ObservableSingleton:ObservableObject,Singleton{}
-    class MarcaClass:Marca{}
-    MarcaClassFactory public static func getInstance<T:MarcaClass>(className:String, kType:T.Type, instanceLabel:String=.emptyString)->MarcaClass! {} 
-    MarcaClassFactory public static func handleNewInstance<T:MarcaClass>(instance:MarcaClass?, kType:T.Type, instanceLabel:String)throws {}
+# ![Marca Banner](Assets.xcassets/smallestlogo.png) &nbsp; <a href="https://github.com/jahearnco/MarcaApp/blob/main/MarcaApp/Ancillary/Crucible/MarcaClassFactory.swift">Factory</a>
+    class MarcaClass:Marca
+    MarcaClassFactory public static func getInstance<T:MarcaClass>(className:String, kType:T.Type, instanceLabel:String=.emptyString)->MarcaClass!
+    MarcaClassFactory public static func handleNewInstance<T:MarcaClass>(instance:MarcaClass?, kType:T.Type, instanceLabel:String)throws
 # ![End Banner](Assets.xcassets/smallestlogo.png) &nbsp; <a href="https://www.everphase.net/resume">Everphase</a>
 Full Stack :: iOS :: AWS :: iOT :: LAMP :: Smart Devices :: EE :: Engineering Physics
 
