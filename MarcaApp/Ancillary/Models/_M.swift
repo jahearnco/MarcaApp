@@ -28,7 +28,7 @@ final class _M:MarcaClass,ObservableSingleton {
         }
     }
 
-    @Published var cacheKiller:String = ""
+    @Published var cacheKiller:String = .emptyString
     @MainActor
     public static func setCacheKiller(_ cacheKiller:String){
         M().cacheKiller = cacheKiller
