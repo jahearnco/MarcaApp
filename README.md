@@ -53,7 +53,7 @@ MarcaApp is a limited feature app version of MARCA based on iOS Amplify-Swift li
     extension CGFloat
     extension EdgeInsets
 # ![Marca Banner](Assets.xcassets/smallestlogo.png) &nbsp; <a href="https://github.com/jahearnco/MarcaApp/blob/main/MarcaApp/Ancillary/Models/_M.swift">Model</a>
-    @Published var cacheKiller:String = ""
+    @Published var cacheKiller:String = .emptyString
     @Published var isPortraitOrientation:Bool = true
     @Published var isLoginButtonPressed:Bool = false
     @Published var headerHeight:CGFloat = .headerHeightPortrait
